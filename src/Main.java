@@ -6,17 +6,17 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
 	private static Game game;
-	
+
 	public static void main(String[] args){
 		init();
-		
+
 		while(!Display.isCloseRequested()){
 			gameLoop();
 		}
-		
+
 		cleanup();
 	}
-	
+
 	public static void init(){
 		// Display
 			try {
@@ -25,7 +25,7 @@ public class Main {
 				Display.setVSyncEnabled(true);
 				Keyboard.create();
 			} catch (LWJGLException e) {e.printStackTrace();}
-		
+
 		// OpenGL
 			// Basics of clearing/preparing the screen for 2D. 
 			glMatrixMode(GL_PROJECTION);
@@ -42,31 +42,31 @@ public class Main {
 		// Create Game
 		game = new Game();
 	}
-	
+
 	public static void gameLoop(){
 		getInput();
 		update();
 		render();
 	}
-	
+
 	public static void getInput(){
 		game.getInput();
 	}
-	
+
 	public static void update(){
 		game.update();
 	}
-	
+
 	public static void render(){
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();
-		
+
 		game.render();
-		
+
 		Display.update();
 		Display.sync(60);
 	}
-	
+
 	public static void cleanup(){
 		Keyboard.destroy();
 		Display.destroy();
