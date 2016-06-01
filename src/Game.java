@@ -3,7 +3,7 @@ public class Game {
 	Player player;
 	
 	public Game(){
-		player = new Player(100, 100, "braidstandp");
+		player = new Player(100, 100);
 	}
 	
 	public void render(){player.draw();}
