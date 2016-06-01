@@ -10,12 +10,14 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class Player {
+	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3; 
+
 	private int x, y;
 	private int sx, sy;
 	private int vx=0, vy=0;
 	private int walkspeed = 5, jumpspeed = 10;
+	private int facing = RIGHT;
 	private Texture texture;
-	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3; 
 	
 	public Player(int x, int y){
 		this.x = x;
@@ -54,8 +56,8 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(checkEdge(LEFT)) { x -= walkspeed; vx = walkspeed; } break;
-			case RIGHT:	if(checkEdge(RIGHT)){ x += walkspeed; vx = walkspeed; } break;
+			case LEFT:	if(checkEdge(LEFT)) { x -= walkspeed; vx = walkspeed; facing = LEFT; } break;
+			case RIGHT:	if(checkEdge(RIGHT)){ x += walkspeed; vx = walkspeed; facing = RIGHT; } break;
 			case UP:	if(!checkEdge(DOWN)){ y  = jumpspeed; vy = jumpspeed; } break;
 		}
 	}
@@ -82,16 +84,20 @@ public class Player {
 			// Draw the points to form the shape, with appropriate texture points.
 			// Slick texture coordinates go top to bottom, OpenGL coordinates go bottom to top, so must flip.
 			glBegin(GL_QUADS);{
-				glTexCoord2f(0,texture.getHeight());
+				if(facing == RIGHT){glTexCoord2f(0,texture.getHeight());}
+				else{glTexCoord2f(texture.getWidth(),texture.getHeight());}
 				glVertex2f(0,0);
-					
-				glTexCoord2f(texture.getWidth(),texture.getHeight());
+
+				if(facing == RIGHT){glTexCoord2f(texture.getWidth(),texture.getHeight());}
+				else{glTexCoord2f(0,texture.getHeight());}
 				glVertex2f(texture.getImageWidth(),0);
-					
-				glTexCoord2f(texture.getWidth(),0);
+
+				if(facing == RIGHT){glTexCoord2f(texture.getWidth(),0);}
+				else{glTexCoord2f(0,0);}
 				glVertex2f(texture.getImageWidth(),texture.getImageHeight());
-					
-				glTexCoord2f(0,0);
+
+				if(facing == RIGHT){glTexCoord2f(0,0);}
+				else{glTexCoord2f(texture.getWidth(),0);}
 				glVertex2f(0,texture.getImageHeight());
 			}glEnd();
 		}glPopMatrix();
