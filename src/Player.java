@@ -13,53 +13,61 @@ public class Player {
 	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 
 	private int x, y;
-	private int sx = 50, sy = 87;
-	private float vy=0;
+	private int w = 50, h = 87;
+	private float vy=0, vx = 0;
 	private int walkspeed = 7, jumpspeed = 10;
 	private float gravity = 0.7f;
 	private int facing = RIGHT;
 	private Texture texture;
+	private Level level;
 
-	public Player(int x, int y){
+	public Player(int x, int y, Level level){
 		this.x = x;
 		this.y = y;
+		this.level = level;
 		this.texture = loadTexture("braidstandsmall_c");
+	}
+	
+	public Player(int x, int y){
+		this(x, y, null);
 	}
 
 	public Player(){
-		this(0, 0);
+		this(0, 0, null);
 	}
 
 	public void getInput(){
 	// Key press -> character movement (via other method).
-		if(Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)){
+		if(pressJump()){
 			move(UP);
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+		if(pressLeft()){
 			move(LEFT);
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+		if(pressRight()){
 			move(RIGHT);
 		}
-		
-		Display.setTitle("x: " + x + " y: " + y);
+		if((!pressRight() && !pressLeft()) || (pressRight() && pressLeft())){
+			vx = 0;
+		}
+		Display.setTitle("" + vx);
 	}
 
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(checkEdge(LEFT)) { x -= walkspeed; facing = LEFT;  }else{x = 0;} break;
-			case RIGHT:	if(checkEdge(RIGHT)){ x += walkspeed; facing = RIGHT; }else{x = Display.getWidth() - sx;} break;
-			case UP:	if(!checkEdge(DOWN)){ y  = jumpspeed; vy = jumpspeed; } break;
+			case LEFT:	if(checkEdgeFree(LEFT)) { vx = walkspeed*-1; facing = LEFT; } else { x = 0; } break;
+			case RIGHT:	if(checkEdgeFree(RIGHT)){ vx = walkspeed;    facing = RIGHT; } else { x = Display.getWidth() - w; } break;
+			case UP:	if(!checkEdgeFree(DOWN)){ y  = jumpspeed; vy = jumpspeed; } break;
 		}
 	}
 
-	public boolean checkEdge(int dir){
-	// Returns false if the player is currently up against a wall (or direction is invalid).
+	public boolean checkEdgeFree(int dir){
+	// Returns false if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
 			case LEFT:	return x > 0;
-			case RIGHT:	return x+sx < Display.getWidth();
-			case UP:	return y+sy < Display.getHeight();
+			case RIGHT:	return x+w < Display.getWidth();
+			case UP:	return y+h < Display.getHeight();
 			case DOWN:	return y > 0;
 		}
 		return false;
@@ -67,19 +75,27 @@ public class Player {
 
 	public void update(){
 		// Gravity, and not falling through the floor.
-		if(checkEdge(DOWN)){
+		boolean isVert = Physics.collidingVert(this, level);
+		boolean isHoriz = Physics.collidingHoriz(this, level);
+
+		if(checkEdgeFree(DOWN) && !isVert){
 			vy -= gravity;
-			y += vy;
 		}else{
 			vy = 0;
-			y = 0;
+//			y = 0;
 		}
+		
+		if(isHoriz){System.out.println("horiz"); vx = 0;}
+		
+		x += vx;
+		y += vy;
 	}
 
 	public void render(){
 	// Draws the player sprite.
-		int xpad = texture.getImageWidth() - sx;			// Is the difference between the texture image's size, and the actual size of the player as interpreted by physics (since slick only likes power of two textures).
-
+		glEnable(GL_TEXTURE_2D);							// Must enable texturing to apply the player texture.
+		int xpad = texture.getImageWidth() - w;			// Is the difference between the texture image's size, and the actual size of the player as interpreted by physics (since slick only likes power of two textures).
+		
 		glPushMatrix();{
 			// Set color, translation (location), rotation & texture.
 			glColor3f(1f, 1f, 1f);
@@ -116,4 +132,14 @@ public class Player {
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
 		return null;
 	}
+	
+	private boolean pressJump(){ return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }
+	private boolean pressLeft(){ return Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT); }
+	private boolean pressRight(){ return Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT); }
+	
+	public int getX(){return x;}
+	public int getY(){return y;}
+	public int getW(){return w;}
+	public int getH(){return h;}
+	public float getVY(){return vy;}
 }

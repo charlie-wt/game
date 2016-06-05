@@ -1,6 +1,9 @@
+import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.opengl.Display;
 
 public class Level {
-	// TODO - Possibly make this an array of Terrains, alter terrain to have type, x & y members.
+	// TODO - Could possibly make this an array of Terrains, alter terrain to have type, x & y members.
+	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
 	
 	public Level(int[][] terrain){
@@ -27,10 +30,13 @@ public class Level {
 	}
 	
 	public void render(){
+		glDisable(GL_TEXTURE_2D);										// Must disable texturing or the terrain won't draw, for some reason (shouldn't need to do this once terrain is textured).
 		for (int y=0; y<terrain.length;y++){
 			for(int x=0;x<terrain[y].length;x++){
-				Terrain.render(x, y, terrain[y][x]);
+				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
 			}
 		}
 	}
+	
+	public int[][] getTerrain(){return terrain;}
 }
