@@ -56,8 +56,8 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; } else { x = 0; } break;
-			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { x = Display.getWidth() - w; } break;
+			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; } else { /*x = 0;*/System.out.println("leftNO");vx=0; } break;
+			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { /* x = Display.getWidth() - w; */System.out.println("rightNO");vx=0; } break;
 			case UP:	if((touchingEdge(DOWN) || downCol) && !upCol)  { vy = jumpspeed; } break;
 		}
 	}
@@ -65,40 +65,30 @@ public class Player {
 	public boolean touchingEdge(int dir){
 	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
-			case LEFT:	return !(x > 0);
-			case RIGHT:	return !(x+w < Display.getWidth());
-			case UP:	return !(y+h < Display.getHeight());
-			case DOWN:	return !(y > 0);
+			case LEFT:	return x <= 0;
+			case RIGHT:	return x+w >= Display.getWidth();
+			case UP:	return y+h >= Display.getHeight();
+			case DOWN:	return y <= 0;
 		}
 		return true;
 	}
 
 	public void update(){
 		// Gravity, and not falling through the floor.
-//		boolean isVert = Physics.collidingVert(this, level);
-//		boolean isHoriz = Physics.collidingHoriz(this, level);
 		Physics.getCollision(this, level);
 		Display.setTitle("upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol);
 
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
-		}else if(downCol && vy < 0){
+		}else if(downCol/* && vy < 0*/){
 			vy = 0;
-		}else if(upCol && vy > 0){
-			vy = 0;
+			y+=0.7;
+		}else if(upCol /*&& vy > 0*/){
+			vy *= -1;
 		}else{
 			vy -= gravity;
 		}
-		
-/*		if(checkEdgeFree(DOWN) && !isVert){
-			vy -= gravity;
-		}else{
-			vy = 0;
-//			y = 0;
-		}*/
-		
-		
 		
 		x += vx;
 		y += vy;
