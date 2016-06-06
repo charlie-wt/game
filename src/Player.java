@@ -42,10 +42,10 @@ public class Player {
 		if(pressJump()){
 			move(UP);
 		}
-		if(pressLeft() && !leftCol){
+		if(pressLeft()){
 			move(LEFT);
 		}
-		if(pressRight() && !rightCol){
+		if(pressRight()){
 			move(RIGHT);
 		}
 		if((!pressRight() && !pressLeft()) || (pressRight() && pressLeft())){
@@ -56,21 +56,21 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(checkEdgeFree(LEFT)) { vx = walkspeed*-1; facing = LEFT; } else { x = 0; } break;
-			case RIGHT:	if(checkEdgeFree(RIGHT)){ vx = walkspeed;    facing = RIGHT; } else { x = Display.getWidth() - w; } break;
-			case UP:	if(!checkEdgeFree(DOWN)){ y  = jumpspeed; vy = jumpspeed; } break;
+			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; } else { x = 0; } break;
+			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { x = Display.getWidth() - w; } break;
+			case UP:	if((touchingEdge(DOWN) || downCol) && !upCol)  { vy = jumpspeed; } break;
 		}
 	}
 
-	public boolean checkEdgeFree(int dir){
-	// Returns false if the player is currently up against an edge of the stage (or direction is invalid).
+	public boolean touchingEdge(int dir){
+	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
-			case LEFT:	return x > 0;
-			case RIGHT:	return x+w < Display.getWidth();
-			case UP:	return y+h < Display.getHeight();
-			case DOWN:	return y > 0;
+			case LEFT:	return !(x > 0);
+			case RIGHT:	return !(x+w < Display.getWidth());
+			case UP:	return !(y+h < Display.getHeight());
+			case DOWN:	return !(y > 0);
 		}
-		return false;
+		return true;
 	}
 
 	public void update(){
@@ -80,10 +80,12 @@ public class Player {
 		Physics.getCollision(this, level);
 		Display.setTitle("upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol);
 
-		if(!checkEdgeFree(DOWN)){
+		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
-		}else if(upCol || downCol){
+		}else if(downCol && vy < 0){
+			vy = 0;
+		}else if(upCol && vy > 0){
 			vy = 0;
 		}else{
 			vy -= gravity;
