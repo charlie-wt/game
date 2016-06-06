@@ -14,12 +14,13 @@ public class Player {
 
 	private int x, y;
 	private int w = 50, h = 87;
-	private float vy=0, vx = 0;
+	private float vy = 0, vx = 0;
 	private int walkspeed = 7, jumpspeed = 10;
 	private float gravity = 0.7f;
 	private int facing = RIGHT;
 	private Texture texture;
 	private Level level;
+	public boolean upCol = false, downCol = false, leftCol = false, rightCol = false;
 
 	public Player(int x, int y, Level level){
 		this.x = x;
@@ -41,16 +42,15 @@ public class Player {
 		if(pressJump()){
 			move(UP);
 		}
-		if(pressLeft()){
+		if(pressLeft() && !leftCol){
 			move(LEFT);
 		}
-		if(pressRight()){
+		if(pressRight() && !rightCol){
 			move(RIGHT);
 		}
 		if((!pressRight() && !pressLeft()) || (pressRight() && pressLeft())){
 			vx = 0;
 		}
-		Display.setTitle("" + vx);
 	}
 
 	public void move(int dir){
@@ -75,17 +75,28 @@ public class Player {
 
 	public void update(){
 		// Gravity, and not falling through the floor.
-		boolean isVert = Physics.collidingVert(this, level);
-		boolean isHoriz = Physics.collidingHoriz(this, level);
+//		boolean isVert = Physics.collidingVert(this, level);
+//		boolean isHoriz = Physics.collidingHoriz(this, level);
+		Physics.getCollision(this, level);
+		Display.setTitle("upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol);
 
-		if(checkEdgeFree(DOWN) && !isVert){
+		if(!checkEdgeFree(DOWN)){
+			vy = 0;
+			y = 0;
+		}else if(upCol || downCol){
+			vy = 0;
+		}else{
+			vy -= gravity;
+		}
+		
+/*		if(checkEdgeFree(DOWN) && !isVert){
 			vy -= gravity;
 		}else{
 			vy = 0;
 //			y = 0;
-		}
+		}*/
 		
-		if(isHoriz){System.out.println("horiz"); vx = 0;}
+		
 		
 		x += vx;
 		y += vy;

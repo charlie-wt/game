@@ -36,6 +36,36 @@ public class Level {
 				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
 			}
 		}
+		
+		displayGrid();
+	}
+	
+	public void displayGrid(){
+		for (int y=0; y<Display.getHeight();y+=50){
+			glPushMatrix();{
+				glColor3f(1f, 0f, 0f);
+				glTranslatef(0, y, 0);
+				glRotatef(0, 0, 0, 1);
+
+				glBegin(GL_LINES);{
+					glVertex2f(0,0);
+					glVertex2f(Display.getWidth(),0);
+				}glEnd();
+			}glPopMatrix();
+		}
+		
+		for (int x=0; x<Display.getWidth();x+=50){
+			glPushMatrix();{
+				glColor3f(1f, 0f, 0f);
+				glTranslatef(x, 0, 0);
+				glRotatef(0, 0, 0, 1);
+
+				glBegin(GL_LINES);{
+					glVertex2f(0,0);
+					glVertex2f(0,Display.getHeight());
+				}glEnd();
+			}glPopMatrix();
+		}
 	}
 	
 	public int[][] getTerrain(){return terrain;}

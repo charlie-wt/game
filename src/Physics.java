@@ -1,11 +1,13 @@
+import java.awt.Rectangle;
+
 import org.lwjgl.opengl.Display;
 
 public class Physics {
-	public static final int NONE = 0, TOP = 1, LEFT = 2, BOTTOM = 3, RIGHT = 4, INSIDE = 5;
+	public static final int NONE = 0, UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, INSIDE = 5;
 	public static final int VERTICAL = 6, HORIZONTAL = 7;
 	
 	public static boolean isColliding(Player player, Level level){
-	// TODO - DOESN'T WORK PROPERLY - WILL RETURN TRUE IF YOU'RE 1 BLOCK AWAY FROM COLLISION.
+	// TODO - DYSFUNCTIONAL - TO BE EVENTUALLY DELETED.
 		int pTileX = (player.getX() - (player.getX()%Terrain.size))/Terrain.size;
 		int pTileY = (player.getY() - (player.getY()%Terrain.size))/Terrain.size;
 		Display.setTitle("X: " + pTileX + "   Y: " + pTileY);
@@ -25,36 +27,54 @@ public class Physics {
 		return false;
 	}
 	
-	public static int getCollision(Player player, Level level){
+	public static boolean getCollision(Player player, Level level){
 		int pTileX = (player.getX() - (player.getX()%Terrain.size))/Terrain.size;
 		int pTileY = (player.getY() - (player.getY()%Terrain.size))/Terrain.size;
 		int pTileW = ((player.getX()+player.getW()) - ((player.getX()+player.getW())%Terrain.size))/Terrain.size - pTileX + 1;
 		int pTileH = ((player.getY()+player.getH()) - ((player.getY()+player.getH())%Terrain.size))/Terrain.size - pTileY + 1;
+		int left = (pTileX - 1 < 0 ? 0 : pTileX - 1);
 		int right = (pTileX + pTileW > 23 ? 23 : pTileX + pTileW);
 		int top = (pTileY + pTileH > 11 ? 11 : pTileY + pTileH);
-//		Display.setTitle("X: " + pTileX + "   Y: " + pTileY + "   W: " + pTileW + "   H: " + pTileH);
-		
-		for(int y=/*(pTileY==0?0:pTileY-1)*/pTileY;y<=top;y++){
-			for(int x=/*(pTileX==0?0:pTileX-1)*/pTileX;x<=right;x++){
-				int block = level.getTerrain()[11-y][x];
-				if (block != Terrain.BACKGROUND){
-					if(y == pTileY){return HORIZONTAL;}
-					else if(x == pTileX){return VERTICAL;}
-					else {return INSIDE;}
-					/*if(y > pTileY){System.out.println("TOP"); return TOP;}
-					if(y < pTileY){System.out.println("BOTTOM"); return BOTTOM;}
-					if(x > pTileX){System.out.println("LEFT"); return LEFT;}
-					if(x < pTileX){System.out.println("RIGHT"); return RIGHT;}
-					else {System.out.println("INSIDE"); return INSIDE;}*/
+		int bottom = (pTileY - 1 < 0 ? 0 : pTileY - 1);
+
+		for(int y=bottom;y<=top;y++){
+			for(int x=left;x<=right;x++){
+
+				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND){																			// If the tile is not a background tile.
+					Rectangle r1 = new Rectangle(player.getX(), player.getY(), player.getX() + player.getW(), player.getY() + player.getH());	// A (awt) rectangle representing the player.
+					Rectangle r2 = new Rectangle(x*Terrain.size, y*Terrain.size, (x+1)*Terrain.size, (y+1)*Terrain.size);						// A (awt) rectangle representing the currently checked block.
+					
+					if(r1.intersects(r2)){
+//						if((player.getX() > x*Terrain.size && player.getX() <= (x+1)*Terrain.size) || (player.getX()+player.getW() > x*Terrain.size && player.getX()+player.getW() <= (x+1)*Terrain.size)){
+							if(player.getX() < x*Terrain.size){
+								System.out.println("Intersecting left at (" + x + "," + y + ").");
+								player.leftCol = true;
+							}
+							if(player.getX()+player.getW() > (x+1)*Terrain.size){
+								System.out.println("Intersecting right at (" + x + "," + y + ").");
+								player.rightCol = true;
+							}
+//						}else{
+							if(player.getY()+player.getH() > y*Terrain.size){
+								System.out.println("Intersecting up at (" + x + "," + y + ").");
+								player.upCol = true;
+							}
+							if(player.getY() <= (y+1)*Terrain.size){
+								System.out.println("Intersecting down at (" + x + "," + y + ").");
+								player.downCol = true;
+							}
+//						}
+						return true;
+					}
 				}
 			}
 		}
 		
-		/*System.out.println("None");*/
-		return NONE;
+		return false;
 	}
 	
 	public static boolean collidingVert(Player player, Level level){
+		// TODO - DYSFUNCTIONAL - TO BE EVENTUALLY DELETED.
 		int pTileX = (player.getX() - (player.getX()%Terrain.size))/Terrain.size;
 		int pTileY = (player.getY() - (player.getY()%Terrain.size))/Terrain.size;
 		int pTileW = ((player.getX()+player.getW()) - ((player.getX()+player.getW())%Terrain.size))/Terrain.size - pTileX + 1;
@@ -65,8 +85,9 @@ public class Physics {
 		for(int y=pTileY;y<=top;y++){
 			for(int x=pTileX;x<=right;x++){
 				int block = level.getTerrain()[11-y][x];
-				if (block != Terrain.BACKGROUND){
-					if(x == pTileX){return true;}
+//				Display.setTitle("Checking if " + player.getY() + " > " + y*Terrain.size + " or if " + (player.getY() + player.getH()) + "<" + (y + 1)*Terrain.size + "...");
+				if ( block != Terrain.BACKGROUND   &&   (player.getY() > y*Terrain.size   ||   (player.getY() + player.getH() < (y + 1)*Terrain.size)) ){
+					return true;
 				}
 			}
 		}
@@ -75,8 +96,9 @@ public class Physics {
 	}
 	
 	public static boolean collidingHoriz(Player player, Level level){
+		// TODO - DYSFUNCTIONAL - TO BE EVENTUALLY DELETED.
 		int pTileX = (player.getX() - (player.getX()%Terrain.size))/Terrain.size;
-		int pTileY = (player.getY() - (player.getY()%Terrain.size))/Terrain.size;
+		int pTileY = (player.getY() - (player.getY()%Terrain.size))/Terrain.size + 1;
 		int pTileW = ((player.getX()+player.getW()) - ((player.getX()+player.getW())%Terrain.size))/Terrain.size - pTileX + 1;
 		int pTileH = ((player.getY()+player.getH()) - ((player.getY()+player.getH())%Terrain.size))/Terrain.size - pTileY + 1;
 		int right = (pTileX + pTileW > 23 ? 23 : pTileX + pTileW);
@@ -84,13 +106,22 @@ public class Physics {
 		
 		for(int y=pTileY;y<=top;y++){
 			for(int x=pTileX;x<=right;x++){
-				int block = level.getTerrain()[11-y][x];
-				if (block != Terrain.BACKGROUND){
-					if(y == pTileY){return true;}
+
+				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND){																			// If the tile is not a background tile.
+					Rectangle r1 = new Rectangle(player.getX(), player.getY(), player.getX() + player.getW(), player.getY() + player.getH());	// A (awt) rectangle representing the player.
+					Rectangle r2 = new Rectangle(x*Terrain.size, y*Terrain.size, (x+1)*Terrain.size, (y+1)*Terrain.size);						// A (awt) rectangle representing the currently checked block.
+					
+					if(r1.intersects(r2)){
+						if((player.getX() > x*Terrain.size && player.getX() <= (x+1)*Terrain.size) || (player.getX()+player.getW() > x*Terrain.size && player.getX()+player.getW() <= (x+1)*Terrain.size)){
+							// Extra check for if the intersection is horizontal, not vertical.
+							System.out.println("Intersecting (" + x + "," + y + ").");
+							return true;
+						}
+					}
 				}
 			}
 		}
 		
-		return false;		
+		return false;
 	}
 }
