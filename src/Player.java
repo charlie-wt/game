@@ -56,8 +56,8 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; } else { /*x = 0;*/System.out.println("leftNO");vx=0; } break;
-			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { /* x = Display.getWidth() - w; */System.out.println("rightNO");vx=0; } break;
+			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; }  else { vx=0; } break;
+			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { vx=0; } break;
 			case UP:	if((touchingEdge(DOWN) || downCol) && !upCol)  { vy = jumpspeed; } break;
 		}
 	}
@@ -81,10 +81,9 @@ public class Player {
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
-		}else if(downCol/* && vy < 0*/){
+		}else if(downCol && vy <= 0){
 			vy = 0;
-			y+=0.7;
-		}else if(upCol /*&& vy > 0*/){
+		}else if(upCol && vy >= 0){
 			vy *= -1;
 		}else{
 			vy -= gravity;

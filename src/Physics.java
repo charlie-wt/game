@@ -50,22 +50,22 @@ public class Physics {
 						isCollision = true;
 						
 						if( player.getX() > x*Terrain.size && (y*Terrain.size >= player.getY() || (y+1)*Terrain.size >= player.getY()+player.getH()) ){
-							System.out.println("Intersecting left at (" + x + "," + y + ").");
+							/*System.out.println("Intersecting left at (" + x + "," + y + ").");*/
 							player.leftCol = true;
 						}else{player.leftCol = false;}
 						
 						if( player.getX() < (x)*Terrain.size && (y*Terrain.size >= player.getY() || (y+1)*Terrain.size >= player.getY()+player.getH()) ){
-							System.out.println("Intersecting right at (" + x + "," + y + ").");
+							/*System.out.println("Intersecting right at (" + x + "," + y + ").");*/
 							player.rightCol = true;
 						}else{player.rightCol = false;}
 						
 						if( player.getY()+player.getH() > y*Terrain.size && player.getY()+player.getH() <= (y+1)*Terrain.size ){
-							System.out.println("Intersecting up at (" + x + "," + y + ").");
+							/*System.out.println("Intersecting up at (" + x + "," + y + ").");*/
 							player.upCol = true;
 						}else{player.upCol = false;}
 						
 						if( player.getY() <= (y+1)*Terrain.size ){
-							System.out.println("Intersecting down at (" + x + "," + y + ").");
+							/*System.out.println("Intersecting down at (" + x + "," + y + ").");*/
 							player.downCol = true;
 						}else{player.downCol = false;}
 					}else{player.leftCol = false; player.rightCol = false; player.upCol = false; player.downCol = false;}
