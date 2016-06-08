@@ -37,7 +37,7 @@ public class Level {
 			}
 		}
 		
-		displayGrid();
+//		displayGrid();
 	}
 	
 	public void displayGrid(){

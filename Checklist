@@ -1,0 +1,14 @@
+.THE CHECKLIST.
+
+X Player.
+X Textured player.
+X Basic movement.
+X Gravity, jumping.
+X Terrain.
+X Collision detection.
+X Collision handling.
+- Textured terrain.
+- Level loading (via files).
+- Death.
+- A goal.
+- A main menu.

@@ -57,9 +57,9 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(!touchingEdge(LEFT)/*  && !leftCol*/)           { vx = walkspeed*-1; facing = LEFT; }  else { vx=0; } break;
-			case RIGHT:	if(!touchingEdge(RIGHT)/* && !rightCol*/)          { vx = walkspeed;    facing = RIGHT; } else { /*x=(int)((x + vx) - (x + vx)%Terrain.size);*/vx=0; } break;
-			case UP:	if((touchingEdge(DOWN) || jumpFlag/*  || downCol*/)/* && !upCol*/) { vy = jumpspeed; } break;
+			case LEFT:	if(!touchingEdge(LEFT))           { vx = walkspeed*-1; facing = LEFT; }  else { vx=0; } break;
+			case RIGHT:	if(!touchingEdge(RIGHT))          { vx = walkspeed;    facing = RIGHT; } else { vx=0; } break;
+			case UP:	if(touchingEdge(DOWN) || jumpFlag){ vy = jumpspeed; } break;
 		}
 	}
 
@@ -75,25 +75,15 @@ public class Player {
 	}
 
 	public void update(){
-		// Gravity, and not falling through the floor.
-//		Physics.getCollision(this, level);
+		// Gravity, collisions and updating position based on velocity.
 		Display.setTitle("x: " + x + "   y: " + y + "   upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol/* + "   inside: " + inside*/);
 
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
-		}/*else if(downCol && vy <= 0){
-//			y = (int)((y+vy) + (vy - gravity)%Terrain.size);
-			vy = 0;
-		}else if(upCol && vy >= 0){
-			vy *= -1;
-		}*/else{
+		}else{
 			vy -= gravity;
 		}
-		
-/*		if(leftCol) {vx=0;}
-		if(rightCol){vx=0;}
-		if(inside)  {vx=0;}*/
 		
 		x += vx + Physics.getCollisionX(this, level);
 		y += vy + Physics.getCollisionY(this, level);
