@@ -20,7 +20,8 @@ public class Player {
 	private int facing = RIGHT;
 	private Texture texture;
 	private Level level;
-	public boolean upCol = false, downCol = false, leftCol = false, rightCol = false;
+	public boolean upCol = false, downCol = false, leftCol = false, rightCol = false, inside = false;
+	public boolean jumpFlag = false;
 
 	public Player(int x, int y, Level level){
 		this.x = x;
@@ -38,7 +39,7 @@ public class Player {
 	}
 
 	public void getInput(){
-	// Key press -> character movement (via other method).
+	// Key press -> character movement.
 		if(pressJump()){
 			move(UP);
 		}
@@ -56,9 +57,9 @@ public class Player {
 	public void move(int dir){
 	// Updates location/velocity variables.
 		switch(dir){
-			case LEFT:	if(!touchingEdge(LEFT) && !leftCol)  { vx = walkspeed*-1; facing = LEFT; }  else { vx=0; } break;
-			case RIGHT:	if(!touchingEdge(RIGHT) && !rightCol){ vx = walkspeed;    facing = RIGHT; } else { vx=0; } break;
-			case UP:	if((touchingEdge(DOWN) || downCol) && !upCol)  { vy = jumpspeed; } break;
+			case LEFT:	if(!touchingEdge(LEFT)/*  && !leftCol*/)           { vx = walkspeed*-1; facing = LEFT; }  else { vx=0; } break;
+			case RIGHT:	if(!touchingEdge(RIGHT)/* && !rightCol*/)          { vx = walkspeed;    facing = RIGHT; } else { /*x=(int)((x + vx) - (x + vx)%Terrain.size);*/vx=0; } break;
+			case UP:	if((touchingEdge(DOWN) || jumpFlag/*  || downCol*/)/* && !upCol*/) { vy = jumpspeed; } break;
 		}
 	}
 
@@ -75,22 +76,28 @@ public class Player {
 
 	public void update(){
 		// Gravity, and not falling through the floor.
-		Physics.getCollision(this, level);
-		Display.setTitle("upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol);
+//		Physics.getCollision(this, level);
+		Display.setTitle("x: " + x + "   y: " + y + "   upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol/* + "   inside: " + inside*/);
 
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
-		}else if(downCol && vy <= 0){
+		}/*else if(downCol && vy <= 0){
+//			y = (int)((y+vy) + (vy - gravity)%Terrain.size);
 			vy = 0;
 		}else if(upCol && vy >= 0){
 			vy *= -1;
-		}else{
+		}*/else{
 			vy -= gravity;
 		}
 		
-		x += vx;
-		y += vy;
+/*		if(leftCol) {vx=0;}
+		if(rightCol){vx=0;}
+		if(inside)  {vx=0;}*/
+		
+		x += vx + Physics.getCollisionX(this, level);
+		y += vy + Physics.getCollisionY(this, level);
+		if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
 	}
 
 	public void render(){
@@ -143,5 +150,6 @@ public class Player {
 	public int getY(){return y;}
 	public int getW(){return w;}
 	public int getH(){return h;}
+	public float getVX(){return vx;}
 	public float getVY(){return vy;}
 }

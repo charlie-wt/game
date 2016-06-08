@@ -21,6 +21,6 @@ public class Game {
 	}
 
 	public void render(){player.render(); level.render();}
-	public void update(){/*Physics.getCollision(player, level);*/ player.update();}
+	public void update(){player.update();}
 	public void getInput(){player.getInput();}
 }
