@@ -27,7 +27,7 @@ public class Game {
 		player = new Player(100, 100, level);
 	}
 
-	public void render(){player.render(); level.render();}
+	public void render(){level.drawBackground(); player.render(); level.render();}
 	public void update(){player.update();}
 	public void getInput(){player.getInput();}
 	

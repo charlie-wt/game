@@ -4,38 +4,42 @@ import org.newdawn.slick.opengl.Texture;
 public class Terrain {
 	public static final int BACKGROUND=0, GRASS=1, DIRT=2, SPIKES=3;
 	public static final int size = 50;
+	public static Texture grass = Game.loadTexture("grass64");
+	public static Texture dirt = Game.loadTexture("dirt64");
+	public static Texture spikes = Game.loadTexture("spikes64");
 	
 	public static void render(int x, int y, int type){
-		Texture tex;
+		float w, h;
+		int iw, ih;
+		
 		glPushMatrix();{
 			// Set color, translation (location), rotation & texture.
 			glColor3f(1f, 1f, 1f);
 			switch(type){
-				case GRASS:  tex = Game.loadTexture("grass64");break;
-				case DIRT:   tex = Game.loadTexture("dirt64"); break;
-				case SPIKES: tex = Game.loadTexture("spikes64"); break;
+				case GRASS:  grass.bind(); w = grass.getWidth(); h = grass.getHeight(); iw = grass.getImageWidth(); ih = grass.getImageHeight(); break;
+				case DIRT:   dirt.bind(); w = dirt.getWidth(); h = dirt.getHeight(); iw = dirt.getImageWidth(); ih = dirt.getImageHeight(); break;
+				case SPIKES: spikes.bind(); spikes.bind(); w = spikes.getWidth(); h = spikes.getHeight(); iw = spikes.getImageWidth(); ih = spikes.getImageHeight(); break;
 				default: return;
 			}
 			
-			int xpad = tex.getImageWidth() - size;
+			int xpad = iw - size;
 			
 			glTranslatef(x - (xpad/2), y, 0);
 			glRotatef(0, 0, 0, 1);
-			tex.bind();
 
 			// Draw the points to form the shape.
 			glBegin(GL_QUADS);{
-				glTexCoord2f(0,tex.getHeight());
+				glTexCoord2f(0,h);
 				glVertex2f(0,0);
 
-				glTexCoord2f(tex.getWidth(),tex.getHeight());
-				glVertex2f(tex.getImageWidth(),0);
+				glTexCoord2f(w,h);
+				glVertex2f(iw,0);
 
-				glTexCoord2f(tex.getWidth(),0);
-				glVertex2f(tex.getImageWidth(),tex.getImageHeight());
+				glTexCoord2f(w,0);
+				glVertex2f(iw,ih);
 
 				glTexCoord2f(0,0);
-				glVertex2f(0,tex.getImageHeight());
+				glVertex2f(0,ih);
 			}glEnd();
 		}glPopMatrix();
 	}
