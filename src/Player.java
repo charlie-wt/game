@@ -27,7 +27,7 @@ public class Player {
 		this.x = x;
 		this.y = y;
 		this.level = level;
-		this.texture = loadTexture("braidstandsmall_c");
+		this.texture = Game.loadTexture("braidstandsmall_c");
 	}
 	
 	public Player(int x, int y){
@@ -122,14 +122,6 @@ public class Player {
 				glVertex2f(0,texture.getImageHeight());
 			}glEnd();
 		}glPopMatrix();
-	}
-
-	private static Texture loadTexture(String name){
-	// TODO - THIS PROBABLY SHOULDN'T BE LOCATED HERE
-		try {
-			return TextureLoader.getTexture("png",  new FileInputStream(new File("res/" + name + ".png")));
-		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
-		return null;
 	}
 	
 	private boolean pressJump(){ return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }

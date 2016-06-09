@@ -30,7 +30,7 @@ public class Level {
 	}
 	
 	public void render(){
-		glDisable(GL_TEXTURE_2D);										// Must disable texturing or the terrain won't draw, for some reason (shouldn't need to do this once terrain is textured).
+//		glDisable(GL_TEXTURE_2D);										// Must disable texturing or the terrain won't draw, for some reason (shouldn't need to do this once terrain is textured).
 		for (int y=0; y<terrain.length;y++){
 			for(int x=0;x<terrain[y].length;x++){
 				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
