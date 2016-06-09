@@ -18,12 +18,7 @@ public class Terrain {
 			}
 			
 			int xpad = tex.getImageWidth() - size;
-/*			switch(type){
-				case GRASS:  glColor3f(0.43f, 0.81f, 0.16f); break;
-				case DIRT:   glColor3f(0.61f, 0.43f, 0.13f); break;
-				case SPIKES: glColor3f(0.86f, 0.86f, 0.86f); break;
-				default: return;
-			}*/
+			
 			glTranslatef(x - (xpad/2), y, 0);
 			glRotatef(0, 0, 0, 1);
 			tex.bind();
@@ -42,12 +37,6 @@ public class Terrain {
 				glTexCoord2f(0,0);
 				glVertex2f(0,tex.getImageHeight());
 			}glEnd();
-/*			glBegin(GL_QUADS);{
-				glVertex2f(0,0);
-				glVertex2f(size,0);
-				glVertex2f(size,size);
-				glVertex2f(0,size);
-			}glEnd();*/
 		}glPopMatrix();
 	}
 }

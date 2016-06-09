@@ -1,13 +1,7 @@
 import static org.lwjgl.opengl.GL11.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 
 public class Player {
 	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
