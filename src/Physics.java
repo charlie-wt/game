@@ -16,7 +16,7 @@ public class Physics {
 		for(int y=pTileY; y<=top; y++){
 			for(int x=pTileX; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
-					boolean isWithinPlayerY = ((y*ts > py + 1 && y*ts < py+ph + 1) || ((y+1)*ts > py + 1 && (y+1)*ts < py+ph + 1));
+					boolean isWithinPlayerY = ((y*ts > py + 1 && y*ts < py+ph - 1) || ((y+1)*ts > py + 1 && (y+1)*ts < py+ph - 1));
 					
 					if( player.getVX() > 0    && isWithinPlayerY ){
 						return ((px+pw) - x*ts)*-1;

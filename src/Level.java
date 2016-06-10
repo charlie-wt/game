@@ -43,7 +43,7 @@ public class Level {
 		glPushMatrix();{
 			// Set color, translation (location), rotation & texture.
 			tex.bind();
-			glColor3f(1f, 1f, 1f);						
+			glColor3f(1f, 1f, 1f);
 			glTranslatef(0, 0, 0);
 			glRotatef(0, 0, 0, 1);
 
