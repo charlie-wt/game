@@ -10,18 +10,17 @@ public class Player {
 	private int w = 50, h = 87;
 	private float vy = 0, vx = 0;
 	private int walkspeed = 7, jumpspeed = 10;
-	private float gravity = 0.7f;
+	private float gravity = 0.5f;
 	private int facing = RIGHT;
 	private Texture texture;
 	private Level level;
-	public boolean upCol = false, downCol = false, leftCol = false, rightCol = false, inside = false;
 	public boolean jumpFlag = false;
 
 	public Player(int x, int y, Level level){
 		this.x = x;
 		this.y = y;
 		this.level = level;
-		this.texture = Game.loadTexture("braidstandsmall_c");
+		this.texture = Game.loadTexture("braidstandsmall");
 	}
 	
 	public Player(int x, int y){
@@ -70,8 +69,6 @@ public class Player {
 
 	public void update(){
 		// Gravity, collisions and updating position based on velocity.
-		Display.setTitle("x: " + x + "   y: " + y + "   upCol: " + upCol + "   downCol: " + downCol + "   leftCol: " + leftCol + "   rightCol: " + rightCol/* + "   inside: " + inside*/);
-
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;

@@ -1,11 +1,9 @@
 import static org.lwjgl.opengl.GL11.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
@@ -13,7 +11,7 @@ public class Level {
 	// TODO - Could possibly make this an array of Terrains, alter terrain to have type, x & y members.
 	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
-	Texture tex = Game.loadTexture("sky");
+	Texture background = Game.loadTexture("sky");
 	
 	public Level(int[][] terrain){
 		this.terrain = terrain;
@@ -47,22 +45,19 @@ public class Level {
 	}
 	
 	public static Level fromFile(String filename){
+	// Reads a level in from a file and converts it to an object for use.
 		File file = new File("lvl/" + filename);
 		int[][] terrain = new int[12][24];
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line  = br.readLine();
-			int count = 0;
-			while(line != null){
-				for(int i=0;i<line.length();i++){
-					terrain[count][i] = Character.getNumericValue(line.charAt(i));
-					System.out.print(Character.getNumericValue(line.charAt(i)) + " ");
+			for(int y=0;line!=null;y++){
+				for(int x=0;x<line.length();x++){
+					terrain[y][x] = Character.getNumericValue(line.charAt(x));
 				}
-				System.out.println();
-				count++;
 				line = br.readLine();
 			}
-			
+			br.close();
 			return new Level(terrain);
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
 		return null;
@@ -71,29 +66,30 @@ public class Level {
 	public void drawBackground(){
 		glPushMatrix();{
 			// Set color, translation (location), rotation & texture.
-			tex.bind();
+			background.bind();
 			glColor3f(1f, 1f, 1f);
 			glTranslatef(0, 0, 0);
 			glRotatef(0, 0, 0, 1);
 
 			// Draw the points to form the shape.
 			glBegin(GL_QUADS);{
-				glTexCoord2f(0,tex.getHeight());
+				glTexCoord2f(0,background.getHeight());
 				glVertex2f(0,0);
 
-				glTexCoord2f(tex.getWidth(),tex.getHeight());
-				glVertex2f(tex.getImageWidth(),0);
+				glTexCoord2f(background.getWidth(),background.getHeight());
+				glVertex2f(background.getImageWidth(),0);
 
-				glTexCoord2f(tex.getWidth(),0);
-				glVertex2f(tex.getImageWidth(),tex.getImageHeight());
+				glTexCoord2f(background.getWidth(),0);
+				glVertex2f(background.getImageWidth(),background.getImageHeight());
 
 				glTexCoord2f(0,0);
-				glVertex2f(0,tex.getImageHeight());
+				glVertex2f(0,background.getImageHeight());
 			}glEnd();
 		}glPopMatrix();
 	}
 	
 	public void displayGrid(){
+	// Displays a red terrain grid.
 		for (int y=0; y<Display.getHeight();y+=50){
 			glPushMatrix();{
 				glColor3f(1f, 0f, 0f);
