@@ -7,8 +7,9 @@ X Gravity, jumping.
 X Terrain.
 X Collision detection.
 X Collision handling.
-- Textured terrain.
-- Level loading (via files).
+X Textured terrain.
+X Level loading (via files).
 - Death.
 - A goal.
+- Enemies.
 - A main menu.

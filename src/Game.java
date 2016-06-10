@@ -23,7 +23,8 @@ public class Game {
 						{0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0},
 						{1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1},
 					   };
-		level = new Level(terr);
+//		level = new Level(terr);
+		level = Level.fromFile("lvl1");
 		player = new Player(100, 100, level);
 	}
 

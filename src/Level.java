@@ -1,4 +1,11 @@
 import static org.lwjgl.opengl.GL11.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
@@ -37,6 +44,28 @@ public class Level {
 				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
 			}
 		}
+	}
+	
+	public static Level fromFile(String filename){
+		File file = new File("lvl/" + filename);
+		int[][] terrain = new int[12][24];
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line  = br.readLine();
+			int count = 0;
+			while(line != null){
+				for(int i=0;i<line.length();i++){
+					terrain[count][i] = Character.getNumericValue(line.charAt(i));
+					System.out.print(Character.getNumericValue(line.charAt(i)) + " ");
+				}
+				System.out.println();
+				count++;
+				line = br.readLine();
+			}
+			
+			return new Level(terrain);
+		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
+		return null;
 	}
 	
 	public void drawBackground(){
