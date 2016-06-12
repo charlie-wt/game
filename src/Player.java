@@ -69,6 +69,7 @@ public class Player {
 
 	public void update(){
 		// Gravity, collisions and updating position based on velocity.
+		Display.setTitle("X: " + x + "   y: " + y);
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
@@ -76,15 +77,9 @@ public class Player {
 			vy -= gravity;
 		}
 		
-		try {
-			x += vx + Physics.getCollisionX(this, level);
-			y += vy + Physics.getCollisionY(this, level);
-			if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-		} catch (DeadException e) {
-			System.out.println("Dead!");
-			x = 100;
-			y = 100;
-		}
+		x += vx + Physics.getCollisionX(this, level);
+		y += vy + Physics.getCollisionY(this, level);
+		if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
 	}
 
 	public void render(){
@@ -119,6 +114,12 @@ public class Player {
 				glVertex2f(0,texture.getImageHeight());
 			}glEnd();
 		}glPopMatrix();
+	}
+	
+	public void die(){
+		System.out.println("Dead!");
+		x = 100;
+		y = 100;
 	}
 	
 	private boolean pressJump(){ return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }

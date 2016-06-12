@@ -1,5 +1,5 @@
 public class Physics {
-	public static int getCollisionX(Player player, Level level) throws DeadException {
+	public static int getCollisionX(Player player, Level level){
 	// Gets the horizontal distance that the player may be intersecting the terrain by, after the next position update.
 		int px = (int)(player.getX() + player.getVX());					// A preemptive measure of the player's x coordinate, after the next update.
 		int py = (int)(player.getY());									// The player's current y coordinate.
@@ -17,7 +17,7 @@ public class Physics {
 			for(int x=pTileX; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
-						throw new DeadException();
+						player.die();
 					}
 					boolean isWithinPlayerY = ((y*ts > py + 1 && y*ts < py+ph - 1) || ((y+1)*ts > py + 1 && (y+1)*ts < py+ph - 1));
 					
@@ -33,7 +33,7 @@ public class Physics {
 		return 0;
 	}
 	
-	public static int getCollisionY(Player player, Level level) throws DeadException {
+	public static int getCollisionY(Player player, Level level){
 	// Gets the vertical distance that the player may be intersecting the terrain by, after the next position update.
 		int px = (int)(player.getX());									// A preemptive measure of the player's x coordinate, after the next update.
 		int py = (int)(player.getY() + player.getVY());					// A preemptive measure of the player's y coordinate, after the next update.
@@ -51,7 +51,7 @@ public class Physics {
 			for(int x=pTileX; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
-						throw new DeadException();
+						player.die();
 					}
 					boolean isWithinPlayerX = ((x*ts > px + 1 && x*ts < px+pw - 1) || ((x+1)*ts > px + 1 && (x+1)*ts < px+pw + 1));
 					
