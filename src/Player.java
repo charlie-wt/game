@@ -76,9 +76,15 @@ public class Player {
 			vy -= gravity;
 		}
 		
-		x += vx + Physics.getCollisionX(this, level);
-		y += vy + Physics.getCollisionY(this, level);
-		if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+		try {
+			x += vx + Physics.getCollisionX(this, level);
+			y += vy + Physics.getCollisionY(this, level);
+			if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+		} catch (DeadException e) {
+			System.out.println("Dead!");
+			x = 100;
+			y = 100;
+		}
 	}
 
 	public void render(){
