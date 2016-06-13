@@ -2,11 +2,12 @@ import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.opengl.Texture;
 
 public class Terrain {
-	public static final int BACKGROUND=0, GRASS=1, DIRT=2, SPIKES=3;
+	public static final int BACKGROUND=0, GRASS=1, DIRT=2, SPIKES=3, GOAL=4;
 	public static final int size = 50;
 	public static Texture grass = Game.loadTexture("grass64");
 	public static Texture dirt = Game.loadTexture("dirt64");
 	public static Texture spikes = Game.loadTexture("spikes64");
+	public static Texture goal = Game.loadTexture("goal64");
 	
 	public static void render(int x, int y, int type){
 		float w, h;
@@ -19,6 +20,7 @@ public class Terrain {
 				case GRASS:  grass.bind(); w = grass.getWidth(); h = grass.getHeight(); iw = grass.getImageWidth(); ih = grass.getImageHeight(); break;
 				case DIRT:   dirt.bind(); w = dirt.getWidth(); h = dirt.getHeight(); iw = dirt.getImageWidth(); ih = dirt.getImageHeight(); break;
 				case SPIKES: spikes.bind(); spikes.bind(); w = spikes.getWidth(); h = spikes.getHeight(); iw = spikes.getImageWidth(); ih = spikes.getImageHeight(); break;
+				case GOAL: goal.bind(); goal.bind(); w = goal.getWidth(); h = goal.getHeight(); iw = goal.getImageWidth(); ih = goal.getImageHeight(); break;
 				default: return;
 			}
 			

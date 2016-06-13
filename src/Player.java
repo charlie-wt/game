@@ -116,7 +116,15 @@ public class Player {
 	}
 	
 	public void die(){
+	// TODO - Sound effect or something, idk.
 		System.out.println("Dead!");
+		x = 100;
+		y = 100;
+	}
+	
+	public void win(){
+	// TODO - Load new level etc.
+		System.out.println("Winner!");
 		x = 100;
 		y = 100;
 	}

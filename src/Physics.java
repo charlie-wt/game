@@ -18,6 +18,8 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 						player.die();
+					}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						player.win();
 					}
 					boolean isWithinPlayerY = ((y*ts > py + 1 && y*ts < py+ph - 1) || ((y+1)*ts > py + 1 && (y+1)*ts < py+ph - 1));
 					
@@ -52,6 +54,8 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 						player.die();
+					}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						player.win();
 					}
 					boolean isWithinPlayerX = ((x*ts > px && x*ts < px+pw) || ((x+1)*ts > px + 1 && (x+1)*ts < px+pw + 1));
 					
