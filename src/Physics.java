@@ -53,7 +53,7 @@ public class Physics {
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 						player.die();
 					}
-					boolean isWithinPlayerX = ((x*ts > px + 1 && x*ts < px+pw - 1) || ((x+1)*ts > px + 1 && (x+1)*ts < px+pw + 1));
+					boolean isWithinPlayerX = ((x*ts > px && x*ts < px+pw) || ((x+1)*ts > px + 1 && (x+1)*ts < px+pw + 1));
 					
 					if( player.getVY() > 0 && isWithinPlayerX ){
 						return ((py+ph) - y*ts)*-1;

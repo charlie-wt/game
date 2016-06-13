@@ -116,6 +116,6 @@ public class Level {
 			}glPopMatrix();
 		}
 	}
-	
+
 	public int[][] getTerrain(){return terrain;}
 }

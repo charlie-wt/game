@@ -84,7 +84,6 @@ public class Player {
 
 	public void render(){
 	// Draws the player sprite.
-		glEnable(GL_TEXTURE_2D);						// Must enable texturing to apply the player texture.
 		int xpad = texture.getImageWidth() - w;			// Is the difference between the texture image's size, and the actual size of the player as interpreted by physics (since slick only likes power of two textures).
 		
 		glPushMatrix();{
