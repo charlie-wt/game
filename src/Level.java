@@ -12,12 +12,17 @@ public class Level {
 	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
 	Texture background = Game.loadTexture("sky");
+	private String name;
+	private int startx, starty;
 	
-	public Level(int[][] terrain){
+	public Level(int[][] terrain, String name, int startx, int starty){
 		this.terrain = terrain;
+		this.name = name;
+		this.startx = startx;
+		this.starty = starty;
 	}
 	
-	public Level(){
+	public Level(String name, int startx, int starty){
 		int[][] tr = new int[12][24];
 		
 		for (int y=0; y<12;y++){
@@ -34,6 +39,9 @@ public class Level {
 		}
 		
 		this.terrain = tr;
+		this.name = name;
+		this.startx = startx;
+		this.starty = starty;
 	}
 	
 	public void render(){		
@@ -47,10 +55,13 @@ public class Level {
 	public static Level fromFile(String filename){
 	// Reads a level in from a file and converts it to an object for use.
 		File file = new File("lvl/" + filename);
+		int startx, starty;
 		int[][] terrain = new int[12][24];
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line  = br.readLine();
+			startx = Integer.parseInt(br.readLine());
+			starty = Integer.parseInt(br.readLine());
+			String line = br.readLine();
 			for(int y=0;line!=null;y++){
 				for(int x=0;x<line.length();x++){
 					terrain[y][x] = Character.getNumericValue(line.charAt(x));
@@ -58,7 +69,7 @@ public class Level {
 				line = br.readLine();
 			}
 			br.close();
-			return new Level(terrain);
+			return new Level(terrain, filename, startx, starty);
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
 		return null;
 	}
@@ -118,4 +129,7 @@ public class Level {
 	}
 
 	public int[][] getTerrain(){return terrain;}
+	public String getName(){return this.name;}
+	public int getStartX(){return this.startx;}
+	public int getStartY(){return this.starty;}
 }

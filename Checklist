@@ -9,7 +9,10 @@ X Collision detection.
 X Collision handling.
 X Textured terrain.
 X Level loading (via files).
-- Death.
-- A goal.
+X Death.
+X A goal.
+X Ability to change levels.
 - Enemies.
+- Sounds.
+- Scrolling levels?
 - A main menu.

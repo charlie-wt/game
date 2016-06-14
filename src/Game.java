@@ -11,12 +11,22 @@ public class Game {
 
 	public Game(){
 		level = Level.fromFile("lvl1");
-		player = new Player(100, 100, level);
+		player = new Player(level, this);
 	}
 
 	public void render(){level.drawBackground(); player.render(); level.render();}
 	public void update(){player.update();}
 	public void getInput(){player.getInput();}
+	
+	public void loadNextLevel(){
+		System.out.println("Level complete!");
+		if(level.getName().equals("lvl1")){
+			level = Level.fromFile("lvl2");
+			player.setLevel(level);
+		}else{
+			System.out.println("Game complete!");
+		}
+	}
 	
 	public static Texture loadTexture(String name){
 		try {

@@ -14,21 +14,15 @@ public class Player {
 	private int facing = RIGHT;
 	private Texture texture;
 	private Level level;
+	private Game game;
 	public boolean jumpFlag = false;
 
-	public Player(int x, int y, Level level){
-		this.x = x;
-		this.y = y;
+	public Player(Level level, Game game){
 		this.level = level;
+		this.x = level.getStartX();
+		this.y = level.getStartY();
 		this.texture = Game.loadTexture("braidstandsmall");
-	}
-	
-	public Player(int x, int y){
-		this(x, y, null);
-	}
-
-	public Player(){
-		this(0, 0, null);
+		this.game = game;
 	}
 
 	public void getInput(){
@@ -118,15 +112,14 @@ public class Player {
 	public void die(){
 	// TODO - Sound effect or something, idk.
 		System.out.println("Dead!");
-		x = 100;
-		y = 100;
+		x = level.getStartX();
+		y = level.getStartY();
 	}
 	
 	public void win(){
-	// TODO - Load new level etc.
-		System.out.println("Winner!");
-		x = 100;
-		y = 100;
+		game.loadNextLevel();
+		x = level.getStartX();
+		y = level.getStartY();
 	}
 	
 	private boolean pressJump(){ return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }
@@ -139,4 +132,5 @@ public class Player {
 	public int getH(){return h;}
 	public float getVX(){return vx;}
 	public float getVY(){return vy;}
+	public void setLevel(Level level){this.level = level;}
 }
