@@ -8,13 +8,15 @@ import org.newdawn.slick.opengl.TextureLoader;
 public class Game {
 	Player player;
 	Level level;
+	Enemy enemy;
 
 	public Game(){
 		level = Level.fromFile("lvl1");
 		player = new Player(level, this);
+		enemy = new Enemy(level, this, 500, 500);
 	}
 
-	public void render(){level.drawBackground(); player.render(); level.render();}
+	public void render(){level.drawBackground(); player.render(); enemy.render(); level.render();}
 	public void update(){player.update();}
 	public void getInput(){player.getInput();}
 	

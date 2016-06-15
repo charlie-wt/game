@@ -16,10 +16,11 @@ public class Physics {
 		for(int y=pTileY; y<=top; y++){
 			for(int x=pTileX; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
-					// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 						player.die();
 					}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
+						// TODO - FOR SOME REASON DOESN'T RESET PLAYER'S COORDINATES PROPERLY IF COLLIDING VERTICALLY.
 						player.win();
 					}
 					boolean isWithinPlayerY = ((y*ts > py + 1 && y*ts < py+ph - 1) || ((y+1)*ts > py + 1 && (y+1)*ts < py+ph - 1));
@@ -53,10 +54,10 @@ public class Physics {
 		for(int y=pTileY; y<=top; y++){
 			for(int x=pTileX; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
-					// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 					if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 						player.die();
 					}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 						player.win();
 					}
 					boolean isWithinPlayerX = ((x*ts > px && x*ts < px+pw) || ((x+1)*ts > px + 1 && (x+1)*ts < px+pw + 1));
