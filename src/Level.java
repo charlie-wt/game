@@ -4,13 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Level {
-	// TODO - Could possibly make this an array of Terrains, alter terrain to have type, x & y members.
+	// TODO - Make way to define enemies in a file, to be parsed in fromFile.
 	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
+	private ArrayList<Entity> enemies;
 	Texture background = Game.loadTexture("sky");
 	private String name;
 	private int startx, starty;
@@ -20,6 +22,7 @@ public class Level {
 		this.name = name;
 		this.startx = startx;
 		this.starty = starty;
+		this.enemies = new ArrayList<Entity>();
 	}
 	
 	public Level(String name, int startx, int starty){
@@ -42,9 +45,10 @@ public class Level {
 		this.name = name;
 		this.startx = startx;
 		this.starty = starty;
+		this.enemies = new ArrayList<Entity>();
 	}
 	
-	public void render(){		
+	public void render(){
 		for (int y=0; y<terrain.length;y++){
 			for(int x=0;x<terrain[y].length;x++){
 				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
@@ -127,9 +131,14 @@ public class Level {
 			}glPopMatrix();
 		}
 	}
+	
+	public void addEnemy(Entity e){
+		enemies.add(e);
+	}
 
 	public int[][] getTerrain(){return terrain;}
 	public String getName(){return this.name;}
 	public int getStartX(){return this.startx;}
 	public int getStartY(){return this.starty;}
+	public ArrayList<Entity> getEnemies(){return enemies;}
 }

@@ -1,6 +1,5 @@
 
 public class Enemy extends Entity {
-	Level level;
 	Game game;
 	
 	public Enemy(Level level, Game game, int x, int y){
@@ -15,5 +14,22 @@ public class Enemy extends Entity {
 		this.texture = Game.loadTexture("braidenemstand64");
 		this.level = level;
 		this.game = game;
+		this.vx = walkspeed;
+	}
+	
+	public void update(){
+		super.update();
+		
+		if(touchingEdge(LEFT) || touchingEdge(RIGHT)){
+			System.out.println("TE");
+			swapDir();
+		}
+	}
+	
+	public void swapDir(){
+		vx *= -1;
+		
+		if(facing == LEFT){facing = RIGHT;}
+		else{facing = LEFT;}
 	}
 }

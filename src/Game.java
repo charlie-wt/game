@@ -14,11 +14,32 @@ public class Game {
 		level = Level.fromFile("lvl1");
 		player = new Player(level, this);
 		enemy = new Enemy(level, this, 500, 500);
+		level.addEnemy(enemy);
 	}
 
-	public void render(){level.drawBackground(); player.render(); enemy.render(); level.render();}
-	public void update(){player.update();}
-	public void getInput(){player.getInput();}
+	public void render(){
+		level.drawBackground();
+		player.render();
+		for (Entity e : level.getEnemies()){
+			e.render();
+		}
+		level.render();
+	}
+	
+	public void update(){
+		player.update();
+		for (Entity e : level.getEnemies()){
+			e.update();
+			// TODO - BIT MESSY TO HAVE THIS HERE; SHOULD PROB HAVE SOMEWHERE IN Player, BUT DON'T WANT TO CYCLE THROUGH ALL ENTITIES ANY MORE TIMES.
+			if(Physics.touchingEntity(player, e)){
+				player.die();
+			}
+		}
+	}
+	
+	public void getInput(){
+		player.getInput();
+	}
 	
 	public void loadNextLevel(){
 		System.out.println("Level complete!");

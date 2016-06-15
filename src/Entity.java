@@ -1,4 +1,5 @@
 import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Entity {
@@ -12,6 +13,32 @@ public class Entity {
 	protected float gravity = 0.5f;
 	protected int facing = RIGHT;
 	protected boolean jumpFlag = false;
+	protected Level level;
+	
+	public boolean touchingEdge(int dir){
+	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
+		switch(dir){
+			case LEFT:	return x <= 0;
+			case RIGHT:	return x+w >= Display.getWidth();
+			case UP:	return y+h >= Display.getHeight();
+			case DOWN:	return y <= 0;
+		}
+		return true;
+	}
+
+	public void update(){
+		// Gravity, collisions and updating position based on velocity.
+		if(touchingEdge(DOWN)){
+			vy = 0;
+			y = 0;
+		}else{
+			vy -= gravity;
+		}
+		
+		if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+		x += vx + Physics.getCollisionX(this, level);
+		y += vy + Physics.getCollisionY(this, level);
+	}
 	
 	public void render(){
 	// Draws the entity sprite.
@@ -45,4 +72,12 @@ public class Entity {
 			}glEnd();
 		}glPopMatrix();
 	}
+	
+	public int getX(){return x;}
+	public int getY(){return y;}
+	public int getW(){return w;}
+	public int getH(){return h;}
+	public float getVX(){return vx;}
+	public float getVY(){return vy;}
+	public void setLevel(Level level){this.level = level;}
 }
