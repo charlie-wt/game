@@ -21,16 +21,8 @@ public class Enemy extends Entity {
 		super.update();
 	}
 	
-	private void ai(){
-/*		int ts = Terrain.size;
-		int left = (x - (x%ts))/ts;
-		int bottom = (y - (y%ts))/ts;
-		int width = ((x+w) - ((x+w)%ts))/ts - left;
-		int right = (left + width > 23 ? 23 : left + width);
-		
-		boolean onLedge = ( Physics.getCollisionY(this, level) <= 0 ) && (level.getTerrain()[11-bottom-1][right + 1] == Terrain.BACKGROUND);*/
-		
-		if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 /*|| onLedge*/ ){
+	private void ai(){		
+		if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 ){
 			swapDir();
 		}
 	}

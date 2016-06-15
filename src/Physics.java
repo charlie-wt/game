@@ -3,24 +3,20 @@ import java.awt.Rectangle;
 public class Physics {
 	public static int getCollisionX(Entity entity, Level level){
 	// Gets the horizontal distance that the entity may be intersecting the terrain by, after the next position update.
-		int ex = (int)(entity.getX() + entity.getVX());					// A preemptive measure of the entity's x coordinate, after the next update.
+		int ex = (int)(entity.getX() + entity.getVX());
 		int ey = (int)(entity.getY());
 		int ew = entity.getW();
 		int eh = entity.getH();
-		int ts = Terrain.size;											// The size of each terrain tile.
-		int eTileX = (ex - (ex%ts))/ts;									// The leftmost tile occupied by the entity.
-		int eTileY = (ey - (ey%ts))/ts;									// The bottommost tile occupied by the entity.
-		int eTileW = ((ex+ew) - ((ex+ew)%ts))/ts - eTileX;				// The width of the entity, in tiles.
-		int eTileH = ((ey+eh) - ((ey+eh)%ts))/ts - eTileY;				// The height of the entity, in tiles.
-		int right = (eTileX + eTileW > 23 ? 23 : eTileX + eTileW);		// The rightmost tile occupied by the entity.
-		int top = (eTileY + eTileH > 11 ? 11 : eTileY + eTileH);		// The topmost tile occupied by the entity.
-		
-/*		if(entity.getClass().getName().equals("Enemy")){
-			Display.setTitle("L: " + pTileX + "   R: " + right + "   B: " + pTileY + "   T: " + top);
-		}*/
+		int ts = Terrain.size;										// The size of each terrain tile.
+		int left = (ex - (ex%ts))/ts;								// The leftmost tile occupied by the entity.
+		int bottom = (ey - (ey%ts))/ts;								// The bottommost tile occupied by the entity.
+		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;				// The width of the entity, in tiles.
+		int height = ((ey+eh) - ((ey+eh)%ts))/ts - bottom;			// The height of the entity, in tiles.
+		int right = (left + width > 23 ? 23 : left + width);		// The rightmost tile occupied by the entity.
+		int top = (bottom + height > 11 ? 11 : bottom + height);	// The topmost tile occupied by the entity.
 
-		for(int y=eTileY; y<=top; y++){
-			for(int x=eTileX; x<=right; x++){
+		for(int y=bottom; y<=top; y++){
+			for(int x=left; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
@@ -36,12 +32,11 @@ public class Physics {
 						}
 					}
 					
-//					boolean isWithinY = ((y*ts > ey + 1 && y*ts < ey+eh - 1) || ((y+1)*ts > ey + 1 && (y+1)*ts < ey+eh - 1));
 					
-					if( entity.getVX() > 0         /*&& isWithinY*/ ){
+					if( entity.getVX() > 0 ){
 						return ((ex+ew) - x*ts)*-1;
 					}
-					else if( entity.getVX() < 0    /*&& isWithinY*/ ){
+					else if( entity.getVX() < 0 ){
 						return (x+1)*ts - ex;
 					}
 				}
@@ -53,19 +48,19 @@ public class Physics {
 	public static int getCollisionY(Entity entity, Level level){
 	// Gets the vertical distance that the entity may be intersecting the terrain by, after the next position update.
 		int ex = (int)(entity.getX());
-		int ey = (int)(entity.getY() + entity.getVY());					// A preemptive measure of the entity's y coordinate, after the next update.
+		int ey = (int)(entity.getY() + entity.getVY());
 		int ew = entity.getW();
 		int eh = entity.getH();
-		int ts = Terrain.size;											// The size of each terrain tile.
-		int eTileX = (ex - (ex%ts))/ts;									// The leftmost tile occupied by the entity.
-		int eTileY = (ey - (ey%ts))/ts;									// The bottommost tile occupied by the entity.
-		int eTileW = ((ex+ew) - ((ex+ew)%ts))/ts - eTileX;				// The width of the entity, in tiles.
-		int eTileH = ((ey+eh) - ((ey+eh)%ts))/ts - eTileY;				// The height of the entity, in tiles.
-		int right = (eTileX + eTileW > 23 ? 23 : eTileX + eTileW);		// The rightmost tile occupied by the entity.
-		int top = (eTileY + eTileH > 11 ? 11 : eTileY + eTileH);		// The topmost tile occupied by the entity.
+		int ts = Terrain.size;										// The size of each terrain tile.
+		int left = (ex - (ex%ts))/ts;								// The leftmost tile occupied by the entity.
+		int bottom = (ey - (ey%ts))/ts;								// The bottommost tile occupied by the entity.
+		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;				// The width of the entity, in tiles.
+		int height = ((ey+eh) - ((ey+eh)%ts))/ts - bottom;			// The height of the entity, in tiles.
+		int right = (left + width > 23 ? 23 : left + width);		// The rightmost tile occupied by the entity.
+		int top = (bottom + height > 11 ? 11 : bottom + height);	// The topmost tile occupied by the entity.
 
-		for(int y=eTileY; y<=top; y++){
-			for(int x=eTileX; x<=right; x++){
+		for(int y=bottom; y<=top; y++){
+			for(int x=left; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
