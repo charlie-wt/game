@@ -1,4 +1,3 @@
-
 public class Enemy extends Entity {
 	Game game;
 	
@@ -9,7 +8,7 @@ public class Enemy extends Entity {
 		this.h = 50;
 		this.vx = 0;
 		this.vy = 0;
-		this.walkspeed = 7;
+		this.walkspeed = 4;
 		this.jumpspeed = 10;
 		this.texture = Game.loadTexture("braidenemstand64");
 		this.level = level;
@@ -18,15 +17,25 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(){
+		ai();
 		super.update();
+	}
+	
+	private void ai(){
+/*		int ts = Terrain.size;
+		int left = (x - (x%ts))/ts;
+		int bottom = (y - (y%ts))/ts;
+		int width = ((x+w) - ((x+w)%ts))/ts - left;
+		int right = (left + width > 23 ? 23 : left + width);
 		
-		if(touchingEdge(LEFT) || touchingEdge(RIGHT)){
-			System.out.println("TE");
+		boolean onLedge = ( Physics.getCollisionY(this, level) <= 0 ) && (level.getTerrain()[11-bottom-1][right + 1] == Terrain.BACKGROUND);*/
+		
+		if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 /*|| onLedge*/ ){
 			swapDir();
 		}
 	}
 	
-	public void swapDir(){
+	private void swapDir(){
 		vx *= -1;
 		
 		if(facing == LEFT){facing = RIGHT;}

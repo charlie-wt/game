@@ -13,7 +13,7 @@ public class Game {
 	public Game(){
 		level = Level.fromFile("lvl1");
 		player = new Player(level, this);
-		enemy = new Enemy(level, this, 500, 500);
+		enemy = new Enemy(level, this, 50, 500);
 		level.addEnemy(enemy);
 	}
 
