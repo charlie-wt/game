@@ -12,7 +12,7 @@ public class Level {
 	// TODO - Make way to define enemies in a file, to be parsed in fromFile.
 	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
-	private ArrayList<Entity> enemies;
+	private ArrayList<Entity> entities;
 	Texture background = Game.loadTexture("sky");
 	private String name;
 	private int startx, starty;
@@ -22,7 +22,7 @@ public class Level {
 		this.name = name;
 		this.startx = startx;
 		this.starty = starty;
-		this.enemies = new ArrayList<Entity>();
+		this.entities = new ArrayList<Entity>();
 	}
 	
 	public Level(String name, int startx, int starty){
@@ -45,7 +45,7 @@ public class Level {
 		this.name = name;
 		this.startx = startx;
 		this.starty = starty;
-		this.enemies = new ArrayList<Entity>();
+		this.entities = new ArrayList<Entity>();
 	}
 	
 	public void render(){
@@ -84,7 +84,7 @@ public class Level {
 				int y = Integer.parseInt(info[1]);
 				int facing = (info[2] == "l" ? Entity.LEFT : Entity.RIGHT);
 				Enemy enemy = new Enemy(level, x, y, facing);
-				level.addEnemy(enemy);
+				level.addEntity(enemy);
 				
 				line = br.readLine();
 			}
@@ -149,13 +149,22 @@ public class Level {
 		}
 	}
 	
-	public void addEnemy(Entity e){
-		enemies.add(e);
+	public void addEntity(Entity e){
+		entities.add(e);
+	}
+	
+	public void resetEnemies(){
+		for(Entity e : entities){
+			if(e.getClass().getName().equals("Enemy")){
+				Enemy enem = (Enemy)e;
+				enem.reset();
+			}
+		}
 	}
 
 	public int[][] getTerrain(){return terrain;}
 	public String getName(){return this.name;}
 	public int getStartX(){return this.startx;}
 	public int getStartY(){return this.starty;}
-	public ArrayList<Entity> getEnemies(){return enemies;}
+	public ArrayList<Entity> getEnemies(){return entities;}
 }
