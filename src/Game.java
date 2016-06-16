@@ -17,7 +17,7 @@ public class Game {
 	public void render(){
 		level.drawBackground();
 		player.render();
-		for (Entity e : level.getEnemies()){
+		for (Entity e : level.getEntities()){
 			e.render();
 		}
 		level.render();
@@ -25,7 +25,7 @@ public class Game {
 	
 	public void update(){
 		player.update();
-		for (Entity e : level.getEnemies()){
+		for (Entity e : level.getEntities()){
 			e.update();
 			// TODO - BIT MESSY TO HAVE THIS HERE; SHOULD PROB HAVE SOMEWHERE IN Player, BUT DON'T WANT TO CYCLE THROUGH ALL ENTITIES ANY MORE TIMES.
 			if(Physics.touchingEntity(player, e)){
@@ -39,13 +39,10 @@ public class Game {
 	}
 	
 	public void loadNextLevel(){
-		System.out.println("Level complete!");
-		if(level.getName().equals("lvl1")){
-			level = Level.fromFile("lvl2");
-			player.setLevel(level);
-		}else{
-			System.out.println("Game complete!");
+		switch(level.getName()){
+			case "lvl1" : level = Level.fromFile("lvl2"); break;
 		}
+		player.setLevel(level);
 	}
 	
 	public static Texture loadTexture(String name){

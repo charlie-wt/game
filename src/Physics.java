@@ -22,16 +22,17 @@ public class Physics {
 					if(entity.getClass().getName().equals("Player")){
 						Player player = (Player)entity;
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
+							player.isDead = true;
 							player.die();
 							return 0;
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
 							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 							// TODO - FOR SOME REASON DOESN'T RESET PLAYER'S COORDINATES PROPERLY IF COLLIDING HORIZONTALLY.
+							player.hasWon = true;
 							player.win();
 							return 0;
 						}
 					}
-					
 					
 					if( entity.getVX() > 0 ){
 						return ((ex+ew) - x*ts)*-1;
@@ -66,9 +67,11 @@ public class Physics {
 					if(entity.getClass().getName().equals("Player")){
 						Player player = (Player)entity;
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
+							player.isDead = true;
 							player.die();
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
 							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
+							player.hasWon = true;
 							player.win();
 						}
 					}

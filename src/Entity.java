@@ -13,6 +13,7 @@ public class Entity {
 	protected float gravity = 0.5f;
 	protected int facing = RIGHT;
 	protected boolean jumpFlag = false;
+	public boolean isDead = false, hasWon = false;
 	protected Level level;
 	
 	public boolean touchingEdge(int dir){
@@ -35,9 +36,11 @@ public class Entity {
 			vy -= gravity;
 		}
 		
-		if(Physics.getCollisionY(this, level) > 0){vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-		x += vx + Physics.getCollisionX(this, level);
-		y += vy + Physics.getCollisionY(this, level);
+		if( Physics.getCollisionY(this, level) > 0 && !hasWon && !isDead ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+		if( !hasWon && !isDead ) {x += vx + Physics.getCollisionX(this, level);}
+		if( !hasWon && !isDead ) {y += vy + Physics.getCollisionY(this, level);}
+		hasWon = false;
+		isDead = false;
 	}
 	
 	public void render(){

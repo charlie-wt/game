@@ -166,5 +166,5 @@ public class Level {
 	public String getName(){return this.name;}
 	public int getStartX(){return this.startx;}
 	public int getStartY(){return this.starty;}
-	public ArrayList<Entity> getEnemies(){return entities;}
+	public ArrayList<Entity> getEntities(){return entities;}
 }

@@ -1,7 +1,6 @@
 import org.lwjgl.input.Keyboard;
 
 public class Player extends Entity {
-
 	private Game game;
 
 	public Player(Level level, Game game){
@@ -46,9 +45,10 @@ public class Player extends Entity {
 	public void die(){
 	// If the player touches spikes, or an enemy.
 	// TODO - Sound effect or something, idk.
-		System.out.println("Dead!");
 		x = level.getStartX();
 		y = level.getStartY();
+		vx = 0;
+		vy = 0;
 		jumpFlag = false;
 		level.resetEnemies();
 	}
@@ -58,6 +58,8 @@ public class Player extends Entity {
 		game.loadNextLevel();
 		x = level.getStartX();
 		y = level.getStartY();
+		vx = 0;
+		vy = 0;
 		jumpFlag = false;
 	}
 	
