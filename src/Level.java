@@ -62,18 +62,35 @@ public class Level {
 		int startx, starty;
 		int[][] terrain = new int[12][24];
 		try {
+			// Set up reader, read player start coords.
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			startx = Integer.parseInt(br.readLine());
 			starty = Integer.parseInt(br.readLine());
 			String line = br.readLine();
-			for(int y=0;line!=null;y++){
+			
+			// Read terrain info.
+			for(int y=0;line != null && !line.startsWith("enem:");y++){
 				for(int x=0;x<line.length();x++){
 					terrain[y][x] = Character.getNumericValue(line.charAt(x));
 				}
 				line = br.readLine();
 			}
+			Level level = new Level(terrain, filename, startx, starty);
+			
+			// Read enemy info.
+			while(line != null){
+				String[] info = line.substring(line.indexOf(':') + 1).split(" ");
+				int x = Integer.parseInt(info[0]);
+				int y = Integer.parseInt(info[1]);
+				int facing = (info[2] == "l" ? Entity.LEFT : Entity.RIGHT);
+				Enemy enemy = new Enemy(level, x, y, facing);
+				level.addEnemy(enemy);
+				
+				line = br.readLine();
+			}
+			
 			br.close();
-			return new Level(terrain, filename, startx, starty);
+			return level;
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
 		return null;
 	}
