@@ -1,7 +1,5 @@
 public class Enemy extends Entity {
-//	Game game;
-	
-	public Enemy(Level level,/* Game game,*/ int x, int y, int facing){
+	public Enemy(Level level, int x, int y, int facing){
 		this.x = x;
 		this.y = y;
 		this.w = 50;
@@ -13,12 +11,10 @@ public class Enemy extends Entity {
 		this.texture = Game.loadTexture("braidenemstand64");
 		this.facing = facing;
 		this.level = level;
-//		this.game = game;
 		this.vx = walkspeed;
 	}
 	
-	public Enemy(Level level, Game game, int x, int y){
-/*		this(level, game, x, y, RIGHT);*/
+	public Enemy(Level level, int x, int y){
 		this(level, x, y, RIGHT);
 	}
 	
