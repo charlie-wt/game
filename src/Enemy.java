@@ -28,9 +28,7 @@ public class Enemy extends Entity {
 		super.update();
 		
 		try {
-			if( Physics.getCollisionY(this, level) > 0 ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-			x += vx + Physics.getCollisionX(this, level);
-			y += vy + Physics.getCollisionY(this, level);
+			updatePos();
 		} catch (DeadException | WinException e) {e.printStackTrace();}
 	}
 	

@@ -20,19 +20,11 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
-//						Player player = (Player)entity;
+					// Winning or dying, for the player only.
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 							throw new DeadException();
-/*							player.isDead = true;
-							player.die();
-							return 0;*/
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
-							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
-							// TODO - FOR SOME REASON DOESN'T RESET PLAYER'S COORDINATES PROPERLY IF COLLIDING HORIZONTALLY.
 							throw new WinException();
-/*							player.hasWon = true;
-							player.win();
-							return 0;*/
 						}
 					}
 					
@@ -67,16 +59,11 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
-//						Player player = (Player)entity;
+					// Winning or dying, for the player only.
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 							throw new DeadException();
-/*							player.isDead = true;
-							player.die();*/
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
-							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 							throw new WinException();
-/*							player.hasWon = true;
-							player.win();*/
 						}
 					}
 					

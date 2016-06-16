@@ -13,28 +13,11 @@ public class Entity {
 	protected float gravity = 0.5f;
 	protected int facing = RIGHT;
 	protected boolean jumpFlag = false;
-	public boolean isDead = false, hasWon = false;
 	protected Level level;
-	
-	public boolean touchingEdge(int dir){
-	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
-		switch(dir){
-			case LEFT:	return x <= 0;
-			case RIGHT:	return x+w >= Display.getWidth();
-			case UP:	return y+h >= Display.getHeight();
-			case DOWN:	return y <= 0;
-		}
-		return true;
-	}
 
-	public void update(){
+	public void update() {
 	// Gravity only.
-		if(touchingEdge(DOWN)){
-			vy = 0;
-			y = 0;
-		}else{
-			vy -= gravity;
-		}
+		checkGravity();		
 	}
 	
 	public void render(){
@@ -68,6 +51,32 @@ public class Entity {
 				glVertex2f(0,texture.getImageHeight());
 			}glEnd();
 		}glPopMatrix();
+	}
+	
+	public void checkGravity(){
+		if(touchingEdge(DOWN)){
+			vy = 0;
+			y = 0;
+		}else{
+			vy -= gravity;
+		}
+	}
+	
+	public void updatePos() throws DeadException, WinException {
+		if( Physics.getCollisionY(this, level) > 0 ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+		x += vx + Physics.getCollisionX(this, level);
+		y += vy + Physics.getCollisionY(this, level);
+	}
+	
+	public boolean touchingEdge(int dir){
+	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
+		switch(dir){
+			case LEFT:	return x <= 0;
+			case RIGHT:	return x+w >= Display.getWidth();
+			case UP:	return y+h >= Display.getHeight();
+			case DOWN:	return y <= 0;
+		}
+		return true;
 	}
 	
 	public int getX(){return x;}

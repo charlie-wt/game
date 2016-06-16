@@ -27,7 +27,6 @@ public class Game {
 		player.update();
 		for (Entity e : level.getEntities()){
 			e.update();
-			// TODO - BIT MESSY TO HAVE THIS HERE; SHOULD PROB HAVE SOMEWHERE IN Player, BUT DON'T WANT TO CYCLE THROUGH ALL ENTITIES ANY MORE TIMES.
 			if(Physics.touchingEntity(player, e)){
 				player.die();
 			}

@@ -37,9 +37,7 @@ public class Player extends Entity {
 		super.update();
 		
 		try {
-			if( Physics.getCollisionY(this, level) > 0 ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-			x += vx + Physics.getCollisionX(this, level);
-			y += vy + Physics.getCollisionY(this, level);
+			updatePos();
 		} catch (DeadException e) {
 			die();
 		} catch (WinException e) {
@@ -58,8 +56,6 @@ public class Player extends Entity {
 	
 	public void die(){
 	// If the player touches spikes, or an enemy.
-	// TODO - Sound effect or something, idk.
-		System.out.println("Dead!");
 		x = level.getStartX();
 		y = level.getStartY();
 		vx = 0;
@@ -70,7 +66,6 @@ public class Player extends Entity {
 	
 	public void win(){
 	// If the player touches the goal tile.
-		System.out.println("Winner!");
 		game.loadNextLevel();
 		x = level.getStartX();
 		y = level.getStartY();

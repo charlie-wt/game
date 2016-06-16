@@ -9,8 +9,6 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Level {
-	// TODO - Make way to define enemies in a file, to be parsed in fromFile.
-	// Also, might change the way size is handled if you do scrolling levels.
 	private int[][] terrain = new int[12][24];
 	private ArrayList<Entity> entities;
 	Texture background = Game.loadTexture("sky");
