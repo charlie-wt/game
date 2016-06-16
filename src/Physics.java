@@ -1,7 +1,7 @@
 import java.awt.Rectangle;
 
 public class Physics {
-	public static int getCollisionX(Entity entity, Level level){
+	public static int getCollisionX(Entity entity, Level level) throws DeadException, WinException {
 	// Gets the horizontal distance that the entity may be intersecting the terrain by, after the next position update.
 		int ex = (int)(entity.getX() + entity.getVX());
 		int ey = (int)(entity.getY());
@@ -20,17 +20,19 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
-						Player player = (Player)entity;
+//						Player player = (Player)entity;
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
-							player.isDead = true;
+							throw new DeadException();
+/*							player.isDead = true;
 							player.die();
-							return 0;
+							return 0;*/
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
 							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
 							// TODO - FOR SOME REASON DOESN'T RESET PLAYER'S COORDINATES PROPERLY IF COLLIDING HORIZONTALLY.
-							player.hasWon = true;
+							throw new WinException();
+/*							player.hasWon = true;
 							player.win();
-							return 0;
+							return 0;*/
 						}
 					}
 					
@@ -46,7 +48,7 @@ public class Physics {
 		return 0;
 	}
 	
-	public static int getCollisionY(Entity entity, Level level){
+	public static int getCollisionY(Entity entity, Level level) throws DeadException, WinException {
 	// Gets the vertical distance that the entity may be intersecting the terrain by, after the next position update.
 		int ex = (int)(entity.getX());
 		int ey = (int)(entity.getY() + entity.getVY());
@@ -65,14 +67,16 @@ public class Physics {
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
 					if(entity.getClass().getName().equals("Player")){
-						Player player = (Player)entity;
+//						Player player = (Player)entity;
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
-							player.isDead = true;
-							player.die();
+							throw new DeadException();
+/*							player.isDead = true;
+							player.die();*/
 						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
 							// TODO - PROBLEM WITH THIS METHOD (INSTEAD OF EXCEPTION): CARRIES ON NORMAL CHECKS EVEN IF DEAD/WON - CAN RESULT IN WINNING LEVEL TWICE IF COLLIDING ON X AND Y.
-							player.hasWon = true;
-							player.win();
+							throw new WinException();
+/*							player.hasWon = true;
+							player.win();*/
 						}
 					}
 					

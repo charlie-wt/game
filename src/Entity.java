@@ -28,19 +28,13 @@ public class Entity {
 	}
 
 	public void update(){
-		// Gravity, collisions and updating position based on velocity.
+	// Gravity only.
 		if(touchingEdge(DOWN)){
 			vy = 0;
 			y = 0;
 		}else{
 			vy -= gravity;
 		}
-		
-		if( Physics.getCollisionY(this, level) > 0 && !hasWon && !isDead ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-		if( !hasWon && !isDead ) {x += vx + Physics.getCollisionX(this, level);}
-		if( !hasWon && !isDead ) {y += vy + Physics.getCollisionY(this, level);}
-		hasWon = false;
-		isDead = false;
 	}
 	
 	public void render(){

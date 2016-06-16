@@ -23,15 +23,24 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(){
-		ai();
+		ai();	
+		
 		super.update();
+		
+		try {
+			if( Physics.getCollisionY(this, level) > 0 ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
+			x += vx + Physics.getCollisionX(this, level);
+			y += vy + Physics.getCollisionY(this, level);
+		} catch (DeadException | WinException e) {e.printStackTrace();}
 	}
 	
 	private void ai(){
 	// Walk until you hit wall/edge of stage, then turn around. Will fall off things.
-		if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 ){
-			swapDir();
-		}
+		try {
+			if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 ){
+				swapDir();
+			}
+		} catch (DeadException | WinException e) {e.printStackTrace();}
 	}
 	
 	public void reset(){
