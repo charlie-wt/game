@@ -19,7 +19,7 @@ public class Physics {
 			for(int x=left; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
-					if(entity.getClass().getName().equals("Player")){
+					if( entity.getClass().getName().equals("Player") ){
 					// Winning or dying, for the player only.
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 							throw new DeadException();
@@ -58,7 +58,7 @@ public class Physics {
 			for(int x=left; x<=right; x++){
 				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
 					
-					if(entity.getClass().getName().equals("Player")){
+					if( entity.getClass().getName().equals("Player") ){
 					// Winning or dying, for the player only.
 						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
 							throw new DeadException();

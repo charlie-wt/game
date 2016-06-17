@@ -25,8 +25,10 @@ public class Game {
 	
 	public void update(){
 		player.update();
+		
 		for (Entity e : level.getEntities()){
 			e.update();
+			
 			if(Physics.touchingEntity(player, e)){
 				player.die();
 			}

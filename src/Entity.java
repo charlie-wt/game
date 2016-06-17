@@ -1,4 +1,7 @@
 import static org.lwjgl.opengl.GL11.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.*;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
@@ -77,6 +80,20 @@ public class Entity {
 			case DOWN:	return y <= 0;
 		}
 		return true;
+	}
+	
+	public void playSound(File file){
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(file));
+			clip.start();
+		} catch (UnsupportedAudioFileException e1) {e1.printStackTrace();} catch (IOException e1) {e1.printStackTrace();} catch (LineUnavailableException e1) {e1.printStackTrace();}
+	}
+	
+	public File findSoundFile(String name){
+	// Simple way to not have to specify full path.
+		String fullPath = "res/" + name + ".wav";
+		return new File(fullPath);
 	}
 	
 	public int getX(){return x;}

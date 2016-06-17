@@ -1,7 +1,9 @@
+import java.io.File;
 import org.lwjgl.input.Keyboard;
 
 public class Player extends Entity {
 	private Game game;
+	private File winSound, deathSound;
 
 	public Player(Level level, Game game){
 		this.x = level.getStartX();
@@ -15,6 +17,8 @@ public class Player extends Entity {
 		this.texture = Game.loadTexture("braidstandsmall");
 		this.level = level;
 		this.game = game;
+		this.deathSound = findSoundFile("death");
+		this.winSound = findSoundFile("win");
 	}
 
 	public void getInput(){
@@ -56,6 +60,7 @@ public class Player extends Entity {
 	
 	public void die(){
 	// If the player touches spikes, or an enemy.
+		playSound(deathSound);
 		x = level.getStartX();
 		y = level.getStartY();
 		vx = 0;
@@ -66,6 +71,7 @@ public class Player extends Entity {
 	
 	public void win(){
 	// If the player touches the goal tile.
+		playSound(winSound);
 		game.loadNextLevel();
 		x = level.getStartX();
 		y = level.getStartY();
