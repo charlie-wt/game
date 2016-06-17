@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -26,13 +28,25 @@ public class Game {
 	public void update(){
 		player.update();
 		
+		// Checking whether the player has died, or killed an enemy.
+		boolean hasDied = false;
+		List<Entity> toKill = new ArrayList<Entity>();
 		for (Entity e : level.getEntities()){
 			e.update();
 			
 			if(Physics.touchingEntity(player, e)){
-				player.die();
+				if(Physics.isStomping(player, e)){
+					toKill.add(e);
+				}else{			
+					player.die();
+					hasDied = true;
+				}
 			}
 		}
+		if( !toKill.isEmpty() && !hasDied ){
+			player.kill();
+		}
+		level.removeEntities(toKill);
 	}
 	
 	public void getInput(){

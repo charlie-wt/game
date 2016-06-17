@@ -3,7 +3,7 @@ import org.lwjgl.input.Keyboard;
 
 public class Player extends Entity {
 	private Game game;
-	private File winSound, deathSound;
+	private File winSound, deathSound, killSound;
 
 	public Player(Level level, Game game){
 		this.x = level.getStartX();
@@ -19,6 +19,7 @@ public class Player extends Entity {
 		this.game = game;
 		this.deathSound = findSoundFile("death");
 		this.winSound = findSoundFile("win");
+		this.killSound = findSoundFile("kill");
 	}
 
 	public void getInput(){
@@ -78,6 +79,12 @@ public class Player extends Entity {
 		vx = 0;
 		vy = 0;
 		jumpFlag = false;
+	}
+	
+	public void kill(){
+	// Is the reaction to killing; doesn't actually kill anything.
+		playSound(killSound);
+		vy = jumpspeed;
 	}
 	
 	private boolean pressJump() { return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }

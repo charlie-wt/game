@@ -86,4 +86,19 @@ public class Physics {
 		Rectangle r2 = new Rectangle(e2.getX(),e2.getY(),e2.getW(),e2.getH());
 		return r1.intersects(r2);
 	}
+	
+	public static boolean isStomping(Entity e1, Entity e2){
+		int e1l = e1.getX();
+		float e1b = e1.getY() + e1.getVY();
+		int e1r = e1.getX()+e1.getW();
+		
+		int e2l = e2.getX();
+		float e2b = e2.getY() + e2.getVY();
+		int e2r = e2.getX()+e2.getW();
+		float e2t = e2.getY() + e2.getVY()+e2.getH();
+		
+		boolean isWithinX = ((e1l > e2l && e1l < e2r) || (e1r > e2l + 1 && e1r < e2r + 1));
+		
+		return isWithinX && e1.getVY() < 0 && e1b < e2t && e1b > e2b;
+	}
 }

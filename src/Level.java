@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
@@ -149,6 +150,16 @@ public class Level {
 	
 	public void addEntity(Entity e){
 		entities.add(e);
+	}
+	
+	public void removeEntity(Entity e){
+		if(entities.contains(e)){
+			entities.remove(e);
+		}
+	}
+	
+	public void removeEntities(List<Entity> e){
+		entities.removeAll(e);
 	}
 	
 	public void resetEnemies(){
