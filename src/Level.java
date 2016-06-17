@@ -15,6 +15,7 @@ public class Level {
 	Texture background = Game.loadTexture("sky");
 	private String name;
 	private int startx, starty;
+	public ArrayList<Entity> startentities;
 	
 	public Level(int[][] terrain, String name, int startx, int starty){
 		this.terrain = terrain;
@@ -22,6 +23,10 @@ public class Level {
 		this.startx = startx;
 		this.starty = starty;
 		this.entities = new ArrayList<Entity>();
+		this.startentities = new ArrayList<Entity>();
+		for(Entity e : entities){
+			startentities.add(e);
+		}
 	}
 	
 	public Level(String name, int startx, int starty){
@@ -45,6 +50,10 @@ public class Level {
 		this.startx = startx;
 		this.starty = starty;
 		this.entities = new ArrayList<Entity>();
+		this.startentities = new ArrayList<Entity>();
+		for(Entity e : entities){
+			startentities.add(e);
+		}
 	}
 	
 	public void render(){
@@ -150,6 +159,7 @@ public class Level {
 	
 	public void addEntity(Entity e){
 		entities.add(e);
+		startentities.add(e);
 	}
 	
 	public void removeEntity(Entity e){
@@ -163,6 +173,11 @@ public class Level {
 	}
 	
 	public void resetEnemies(){
+		for(Entity e : startentities){
+			if (!entities.contains(e)){
+				entities.add(e);
+			}
+		}
 		for(Entity e : entities){
 			if(e.getClass().getName().equals("Enemy")){
 				Enemy enem = (Enemy)e;

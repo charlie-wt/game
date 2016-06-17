@@ -14,6 +14,7 @@ public class Game {
 	public Game(){
 		level = Level.fromFile("lvl1");
 		player = new Player(level, this);
+		System.out.println(level.startentities);
 	}
 
 	public void render(){
@@ -28,7 +29,7 @@ public class Game {
 	public void update(){
 		player.update();
 		
-		// Checking whether the player has died, or killed an enemy.
+		// Updating the level entities. Checking whether the player has died, or killed an enemy.
 		boolean hasDied = false;
 		List<Entity> toKill = new ArrayList<Entity>();
 		for (Entity e : level.getEntities()){

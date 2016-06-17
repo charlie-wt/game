@@ -82,7 +82,7 @@ public class Entity {
 		return true;
 	}
 	
-	public static void playSound(File file){
+	public void playSound(File file){
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(file));
@@ -90,7 +90,7 @@ public class Entity {
 		} catch (UnsupportedAudioFileException e1) {e1.printStackTrace();} catch (IOException e1) {e1.printStackTrace();} catch (LineUnavailableException e1) {e1.printStackTrace();}
 	}
 	
-	public static File findSoundFile(String name){
+	public File findSoundFile(String name){
 	// Simple way to not have to specify full path.
 		String fullPath = "res/" + name + ".wav";
 		return new File(fullPath);
