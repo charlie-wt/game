@@ -1,9 +1,12 @@
 import java.io.File;
+import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.opengl.Texture;
 
 public class Player extends Entity {
 	private Game game;
 	private File winSound, deathSound, killSound;
+	private ArrayList<Texture> walktextures; 
 
 	public Player(Level level, Game game){
 		this.x = level.getStartX();
@@ -20,6 +23,10 @@ public class Player extends Entity {
 		this.deathSound = findSoundFile("death");
 		this.winSound = findSoundFile("win");
 		this.killSound = findSoundFile("kill");
+		
+/*		for(int i=0;i<3;i++){
+			walktextures.add(Game.loadTexture("walk" + i));
+		}*/
 	}
 
 	public void getInput(){

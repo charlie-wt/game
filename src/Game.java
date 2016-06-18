@@ -14,7 +14,6 @@ public class Game {
 	public Game(){
 		level = Level.fromFile("lvl1");
 		player = new Player(level, this);
-		System.out.println(level.startentities);
 	}
 
 	public void render(){
