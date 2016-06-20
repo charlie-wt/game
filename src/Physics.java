@@ -101,4 +101,25 @@ public class Physics {
 		
 		return isWithinX && e1.getVY() < 0 && e1b < e2t && e1b > e2b;
 	}
+	
+	public static boolean touchingFloor(Entity e, Level l){
+		int ex = (int)(e.getX());
+		int ey = (int)(e.getY() + e.getVY());
+		int ew = e.getW();
+		int ts = Terrain.size;
+		int left = (ex - (ex%ts))/ts;
+		int bottom = (ey - (ey%ts))/ts;
+		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;
+		int right = (left + width > 23 ? 23 : left + width);
+
+
+		for(int y=(ey>=ts?bottom-1:bottom); y<=bottom; y++){
+			for(int x=left; x<=right; x++){
+				if( l.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
+					return e.getVY() <= 0 && ey <= (y+1)*ts && ey > y*ts;
+				}
+			}
+		}
+		return false;
+	}
 }

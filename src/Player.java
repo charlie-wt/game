@@ -1,13 +1,12 @@
 import java.io.File;
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Player extends Entity {
 	private Game game;
 	private File winSound, deathSound, killSound;
-	private Texture standtexture;
+	private Texture standtexture, jumptexture, airhangtexture, falltexture;
 	private ArrayList<Texture> walktextures;
 	private int texnum = 0;
 	private static final int walklength = 6, walkdelay = 4;
@@ -33,6 +32,9 @@ public class Player extends Entity {
 		for(int i=0;i<walklength;i++){
 			walktextures.add(Game.loadTexture("anim/playerwalk" + i));
 		}
+		this.jumptexture = Game.loadTexture("anim/playerjump");
+		this.airhangtexture = Game.loadTexture("anim/playerairhang");
+		this.falltexture = Game.loadTexture("anim/playerfall");
 	}
 
 	public void getInput(){
@@ -52,6 +54,7 @@ public class Player extends Entity {
 	}
 	
 	public void update(){
+
 		super.update();
 		
 		try {
@@ -60,10 +63,23 @@ public class Player extends Entity {
 			die();
 		} catch (WinException e) {
 			win();
-		}
-		
-		Display.setTitle(texnum + "");
-		if(vx != 0 ){
+		}	
+
+		animateTexture();
+	}
+	
+	public void animateTexture(){
+	// Chooses texture based on current position, velocity.
+		if(!Physics.touchingFloor(this, level) && !touchingEdge(DOWN)){
+			if(vy > 2){
+				texture = jumptexture;
+			}else if(vy > -2){
+				texture = airhangtexture;
+			}else{
+				texture = falltexture;
+			}
+			texnum = 0;
+		}else if(vx != 0 ){
 			if(texnum % walkdelay == 0){
 				texture = walktextures.get(texnum/walkdelay);
 			}
