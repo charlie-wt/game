@@ -4,7 +4,7 @@ import org.newdawn.slick.opengl.Texture;
 
 public class Enemy extends Entity {
 	private int startx, starty, startdir;
-	private Texture standtexture;
+	private Texture standtexture, airhangtexture, falltexture;
 	private ArrayList<Texture> walktextures;
 	private int texnum = 0;
 	private static final int walklength = 6, walkdelay = 9;
@@ -20,7 +20,7 @@ public class Enemy extends Entity {
 		this.vy = 0;
 		this.walkspeed = 2;
 		this.jumpspeed = 10;
-		this.standtexture = Game.loadTexture("enemynew");
+		this.standtexture = Game.loadTexture("enemystand");
 		this.texture = standtexture;
 		this.facing = startdir;
 		this.level = level;
@@ -30,6 +30,8 @@ public class Enemy extends Entity {
 		for(int i=0;i<walklength;i++){
 			walktextures.add(Game.loadTexture("anim/enemywalk" + i));
 		}
+		this.airhangtexture = Game.loadTexture("anim/enemyairhang");
+		this.falltexture = Game.loadTexture("anim/enemyfall");
 	}
 	
 	public Enemy(Level level, int x, int y){
@@ -59,7 +61,14 @@ public class Enemy extends Entity {
 	
 	public void animateTexture(){
 	// Chooses texture based on current position, velocity.
-		if(vx != 0 ){
+		if(!Physics.touchingFloor(this, level) && !touchingEdge(DOWN)){
+			if(vy > -2){
+				texture = airhangtexture;
+			}else{
+				texture = falltexture;
+			}
+			texnum = 0;
+		}else if(vx != 0 ){
 			if(texnum % walkdelay == 0){
 				texture = walktextures.get(texnum/walkdelay);
 			}
