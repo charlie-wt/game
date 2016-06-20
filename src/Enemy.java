@@ -1,5 +1,13 @@
+import java.util.ArrayList;
+
+import org.newdawn.slick.opengl.Texture;
+
 public class Enemy extends Entity {
-	int startx, starty, startdir;
+	private int startx, starty, startdir;
+	private Texture standtexture;
+	private ArrayList<Texture> walktextures;
+	private int texnum = 0;
+	private static final int walklength = 6, walkdelay = 9;
 	
 	public Enemy(Level level, int x, int y, int facing){
 		this.startx = x;
@@ -10,12 +18,18 @@ public class Enemy extends Entity {
 		this.w = 50;
 		this.h = 50;
 		this.vy = 0;
-		this.walkspeed = 4;
+		this.walkspeed = 2;
 		this.jumpspeed = 10;
-		this.texture = Game.loadTexture("braidenemstand");
+		this.standtexture = Game.loadTexture("enemynew");
+		this.texture = standtexture;
 		this.facing = startdir;
 		this.level = level;
 		this.vx = walkspeed;
+		
+		this.walktextures = new ArrayList<Texture>();
+		for(int i=0;i<walklength;i++){
+			walktextures.add(Game.loadTexture("anim/enemywalk" + i));
+		}
 	}
 	
 	public Enemy(Level level, int x, int y){
@@ -30,6 +44,8 @@ public class Enemy extends Entity {
 		try {
 			updatePos();
 		} catch (DeadException | WinException e) {e.printStackTrace();}
+		
+		animateTexture();
 	}
 	
 	private void ai(){
@@ -39,6 +55,25 @@ public class Enemy extends Entity {
 				swapDir();
 			}
 		} catch (DeadException | WinException e) {e.printStackTrace();}
+	}
+	
+	public void animateTexture(){
+	// Chooses texture based on current position, velocity.
+		if(vx != 0 ){
+			if(texnum % walkdelay == 0){
+				texture = walktextures.get(texnum/walkdelay);
+			}
+			
+			if(texnum >= (walklength - 1)*walkdelay){
+				texnum = 0;
+			}else{
+				texnum++;
+			}
+			
+		}else{
+			texture = standtexture;
+			texnum = 0;
+		}
 	}
 	
 	public void reset(){

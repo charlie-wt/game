@@ -26,6 +26,7 @@ public class Game {
 	}
 	
 	public void update(){
+	// Game logic.
 		player.update();
 		
 		// Updating the level entities. Checking whether the player has died, or killed an enemy.
