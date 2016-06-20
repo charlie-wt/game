@@ -1,12 +1,16 @@
 import java.io.File;
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Player extends Entity {
 	private Game game;
 	private File winSound, deathSound, killSound;
-	private ArrayList<Texture> walktextures; 
+	private Texture standtexture;
+	private ArrayList<Texture> walktextures;
+	private int texnum = 0;
+	private static final int walklength = 6, walkdelay = 4;
 
 	public Player(Level level, Game game){
 		this.x = level.getStartX();
@@ -17,16 +21,18 @@ public class Player extends Entity {
 		this.vy = 0;
 		this.walkspeed = 7;
 		this.jumpspeed = 10;
-		this.texture = Game.loadTexture("braidstandsmall");
+		this.standtexture = Game.loadTexture("playerstand");
+		this.texture = standtexture;
 		this.level = level;
 		this.game = game;
 		this.deathSound = findSoundFile("death");
 		this.winSound = findSoundFile("win");
 		this.killSound = findSoundFile("kill");
 		
-/*		for(int i=0;i<3;i++){
-			walktextures.add(Game.loadTexture("walk" + i));
-		}*/
+		this.walktextures = new ArrayList<Texture>();
+		for(int i=0;i<walklength;i++){
+			walktextures.add(Game.loadTexture("anim/playerwalk" + i));
+		}
 	}
 
 	public void getInput(){
@@ -55,6 +61,23 @@ public class Player extends Entity {
 		} catch (WinException e) {
 			win();
 		}
+		
+		Display.setTitle(texnum + "");
+		if(vx != 0 ){
+			if(texnum % walkdelay == 0){
+				texture = walktextures.get(texnum/walkdelay);
+			}
+			
+			if(texnum >= (walklength - 1)*walkdelay){
+				texnum = 0;
+			}else{
+				texnum++;
+			}
+			
+		}else{
+			texture = standtexture;
+			texnum = 0;
+		}
 	}
 
 	public void move(int dir){
@@ -74,6 +97,7 @@ public class Player extends Entity {
 		vx = 0;
 		vy = 0;
 		jumpFlag = false;
+		texture = standtexture;
 		level.resetEnemies();
 	}
 	
@@ -86,6 +110,7 @@ public class Player extends Entity {
 		vx = 0;
 		vy = 0;
 		jumpFlag = false;
+		texture = standtexture;
 	}
 	
 	public void kill(){

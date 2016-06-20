@@ -12,7 +12,7 @@ public class Enemy extends Entity {
 		this.vy = 0;
 		this.walkspeed = 4;
 		this.jumpspeed = 10;
-		this.texture = Game.loadTexture("braidenemstand64");
+		this.texture = Game.loadTexture("braidenemstand");
 		this.facing = startdir;
 		this.level = level;
 		this.vx = walkspeed;

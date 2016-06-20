@@ -5,10 +5,10 @@ public class Terrain {
 	public static final int BACKGROUND=0, GRASS=1, DIRT=2, SPIKES=3, GOAL=4;
 	public static final int size = 50;
 	
-	public static Texture grass = Game.loadTexture("grass64");
-	public static Texture dirt = Game.loadTexture("dirt64");
-	public static Texture spikes = Game.loadTexture("spikes64");
-	public static Texture goal = Game.loadTexture("goal64");
+	public static Texture grass = Game.loadTexture("grass");
+	public static Texture dirt = Game.loadTexture("dirt");
+	public static Texture spikes = Game.loadTexture("spikes");
+	public static Texture goal = Game.loadTexture("goal");
 	
 	public static void render(int x, int y, int type){
 		float w, h;
