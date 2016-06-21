@@ -8,17 +8,18 @@ public class Physics {
 		int ew = entity.getW();
 		int eh = entity.getH();
 		int ts = Terrain.size;										// The size of each terrain tile.
+		int tw = level.getTerrain()[0].length;
+		int th = level.getTerrain().length;
 		int left = (ex - (ex%ts))/ts;								// The leftmost tile occupied by the entity.
 		int bottom = (ey - (ey%ts))/ts;								// The bottommost tile occupied by the entity.
 		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;				// The width of the entity, in tiles.
 		int height = ((ey+eh) - ((ey+eh)%ts))/ts - bottom;			// The height of the entity, in tiles.
-		int right = (left + width > 23 ? 23 : left + width);		// The rightmost tile occupied by the entity.
-		int top = (bottom + height > 11 ? 11 : bottom + height);	// The topmost tile occupied by the entity.
+		int right = (left + width > tw-1 ? tw-1 : left + width);		// The rightmost tile occupied by the entity.
+		int top = (bottom + height > th-1 ? th-1 : bottom + height);	// The topmost tile occupied by the entity.
 
 		for(int y=bottom; y<=top; y++){
 			for(int x=left; x<=right; x++){
-//				int tile = level.getTerrain().get(11-y).get(x);
-				int tile = level.getTerrain()[11-y][x];
+				int tile = level.getTerrain()[(th-1)-y][x];
 				
 				if( tile != Terrain.BACKGROUND ){
 					if( entity.getClass().getName().equals("Player") ){
@@ -49,17 +50,18 @@ public class Physics {
 		int ew = entity.getW();
 		int eh = entity.getH();
 		int ts = Terrain.size;										// The size of each terrain tile.
+		int tw = level.getTerrain()[0].length;
+		int th = level.getTerrain().length;
 		int left = (ex - (ex%ts))/ts;								// The leftmost tile occupied by the entity.
 		int bottom = (ey - (ey%ts))/ts;								// The bottommost tile occupied by the entity.
 		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;				// The width of the entity, in tiles.
 		int height = ((ey+eh) - ((ey+eh)%ts))/ts - bottom;			// The height of the entity, in tiles.
-		int right = (left + width > 23 ? 23 : left + width);		// The rightmost tile occupied by the entity.
-		int top = (bottom + height > 11 ? 11 : bottom + height);	// The topmost tile occupied by the entity.
+		int right = (left + width > tw-1 ? tw-1 : left + width);		// The rightmost tile occupied by the entity.
+		int top = (bottom + height > th-1 ? th-1 : bottom + height);	// The topmost tile occupied by the entity.
 
 		for(int y=bottom; y<=top; y++){
 			for(int x=left; x<=right; x++){
-//				int tile = level.getTerrain().get(11-y).get(x);
-				int tile = level.getTerrain()[11-y][x];
+				int tile = level.getTerrain()[(th-1)-y][x];
 				
 				if( tile != Terrain.BACKGROUND ){
 					if( entity.getClass().getName().equals("Player") ){
@@ -111,15 +113,16 @@ public class Physics {
 		int ey = (int)(e.getY() + e.getVY());
 		int ew = e.getW();
 		int ts = Terrain.size;
+		int tw = l.getTerrain()[0].length;
+		int th = l.getTerrain().length;
 		int left = (ex - (ex%ts))/ts;
 		int bottom = (ey - (ey%ts))/ts;
 		int width = ((ex+ew) - ((ex+ew)%ts))/ts - left;
-		int right = (left + width > 23 ? 23 : left + width);
-
+		int right = (left + width > tw-1 ? tw-1 : left + width);
 
 		for(int y=(ey>=ts?bottom-1:bottom); y<=bottom; y++){
 			for(int x=left; x<=right; x++){
-				if( /*l.getTerrain().get(11-y).get(x)*/l.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
+				if( l.getTerrain()[(th-1)-y][x] != Terrain.BACKGROUND ){
 					return e.getVY() <= 0 && ey <= (y+1)*ts && ey > y*ts;
 				}
 			}

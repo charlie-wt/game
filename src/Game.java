@@ -4,25 +4,30 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class Game {
-	Player player;
-	Level level;
+	private Player player;
+	private Level level;
+	private int camerax, camerawidth;
 
 	public Game(){
-		level = Level.fromFile("lvl1");
-		player = new Player(level, this);
+		this.level = Level.fromFile("lvl1", this);
+		this.player = new Player(level, this);
+		this.camerax = 0;
+		this.camerawidth = 600;
 	}
 
 	public void render(){
 		level.drawBackground();
-		player.render();
+		player.render(camerax);
 		for (Entity e : level.getEntities()){
-			e.render();
+			e.render(camerax);
 		}
-		level.render();
+		level.render(camerax);
 	}
 	
 	public void update(){
@@ -46,8 +51,18 @@ public class Game {
 		}
 		if( !toKill.isEmpty() && !hasDied ){
 			player.kill();
-		}
+		}		
 		level.removeEntities(toKill);
+		
+		// Apply scrolling, if there's space for it and the player's off to one side.
+		boolean isSpace = Display.getWidth() + (camerax + player.getVX()) <= level.getTerrain()[0].length*Terrain.size && camerax + player.getVX() >= -100;
+		
+		if( player.getX() > (Display.getWidth() / 2) + (camerawidth / 2) && player.getVX() > 0 && isSpace ){
+			camerax += player.getVX();
+		}else if( player.getX() < (Display.getWidth() / 2) - (camerawidth / 2) && player.getVX() < 0 && isSpace ){
+			camerax += player.getVX();
+		}
+		Display.setTitle("Display width: " + Display.getWidth() + "   Level width: " + level.getTerrain()[0].length*Terrain.size + "   Camera: " + camerax);
 	}
 	
 	public void getInput(){
@@ -55,9 +70,10 @@ public class Game {
 	}
 	
 	public void loadNextLevel(){
+		resetCamera();
 		switch(level.getName()){
-			case "lvl1" : level = Level.fromFile("lvl2"); break;
-			case "lvl2" : level = Level.fromFile("lvl3"); break;
+			case "lvl1" : level = Level.fromFile("lvl2", this); break;
+			case "lvl2" : level = Level.fromFile("lvl3", this); break;
 		}
 		player.setLevel(level);
 	}
@@ -68,4 +84,10 @@ public class Game {
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
 		return null;
 	}
+	
+	public void resetCamera(){
+		camerax = 0;
+	}
+	
+	public int getCX(){return camerax;}
 }

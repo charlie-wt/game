@@ -17,20 +17,21 @@ public class Entity {
 	protected int facing = RIGHT;
 	protected boolean jumpFlag = false;
 	protected Level level;
+	protected Game game;
 
 	public void update() {
 	// Gravity only.
 		checkGravity();		
 	}
 	
-	public void render(){
+	public void render(int camerax){
 	// Draws the entity sprite.
 		int xpad = texture.getImageWidth() - w;			// Is the difference between the texture image's size, and the actual size of the player as interpreted by physics (since slick only likes power of two textures).
 		
 		glPushMatrix();{
 			// Set color, translation (location), rotation & texture.
 			glColor3f(1f, 1f, 1f);
-			glTranslatef(x-(xpad/2), y, 0);
+			glTranslatef((x-(xpad/2)) - camerax, y, 0);
 			glRotatef(0, 0, 0, 1);
 			texture.bind();
 
@@ -75,7 +76,7 @@ public class Entity {
 	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
 			case LEFT:	return x <= 0;
-			case RIGHT:	return x+w >= Display.getWidth();
+			case RIGHT:	return (x+w+game.getCX()) >= level.getTerrain()[0].length*Terrain.size;
 			case UP:	return y+h >= Display.getHeight();
 			case DOWN:	return y <= 0;
 		}

@@ -9,7 +9,7 @@ public class Enemy extends Entity {
 	private int texnum = 0;
 	private static final int walklength = 6, walkdelay = 9;
 	
-	public Enemy(Level level, int x, int y, int facing){
+	public Enemy(Level level, Game game, int x, int y, int facing){
 		this.startx = x;
 		this.starty = y;
 		this.startdir = facing;
@@ -24,6 +24,7 @@ public class Enemy extends Entity {
 		this.texture = standtexture;
 		this.facing = startdir;
 		this.level = level;
+		this.game = game;
 		this.vx = walkspeed;
 		
 		this.walktextures = new ArrayList<Texture>();
@@ -34,8 +35,8 @@ public class Enemy extends Entity {
 		this.falltexture = Game.loadTexture("anim/enemyfall");
 	}
 	
-	public Enemy(Level level, int x, int y){
-		this(level, x, y, RIGHT);
+	public Enemy(Level level, Game game, int x, int y){
+		this(level, game, x, y, RIGHT);
 	}
 	
 	public void update(){

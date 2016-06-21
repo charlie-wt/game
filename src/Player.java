@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.Texture;
 
 public class Player extends Entity {
-	private Game game;
 	private File winSound, deathSound, killSound;
 	private Texture standtexture, jumptexture, airhangtexture, falltexture;
 	private ArrayList<Texture> walktextures;
@@ -110,6 +109,7 @@ public class Player extends Entity {
 		playSound(deathSound);
 		x = level.getStartX();
 		y = level.getStartY();
+		game.resetCamera();
 		vx = 0;
 		vy = 0;
 		jumpFlag = false;

@@ -10,7 +10,6 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Level {
-//	private List<List<Integer>> terrain = new ArrayList<List <Integer>>(12);
 	private int[][] terrain;
 	private ArrayList<Entity> entities;
 	Texture background = Game.loadTexture("sky");
@@ -18,7 +17,7 @@ public class Level {
 	private int startx, starty;
 	public ArrayList<Entity> startentities;
 	
-	public Level(int[][] terrain/*List<List<Integer>> terrain*/, String name, int startx, int starty){
+	public Level(int[][] terrain, String name, int startx, int starty){
 		this.terrain = terrain;
 		this.name = name;
 		this.startx = startx;
@@ -31,24 +30,13 @@ public class Level {
 	}
 	
 	public Level(String name, int startx, int starty){
-//		List<List<Integer>> tr = new ArrayList<List<Integer>>(12);
 		int[][] tr = new int[12][24];
 
-		//Initialize terrain 2D list with null values.
-/*		for(int y=0;y<12;y++){
-			terrain.add(new ArrayList<Integer>(24));
-			for(int x=0;x<24;x++){
-				terrain.get(y).add(null);
-			}
-		}*/
-		
 		for (int y=0; y<12;y++){
 			for(int x=0;x<24;x++){
 				if(y == 11){
-//					tr.get(y).set(x, Terrain.GRASS);
 					tr[y][x] = Terrain.GRASS;
 				}else{
-//					tr.get(y).set(x, Terrain.BACKGROUND);
 					tr[y][x] = Terrain.BACKGROUND;
 				}
 			}
@@ -65,27 +53,20 @@ public class Level {
 		}
 	}
 	
-	public void render(){
-		for (int y=0; y</*terrain.size()*/terrain.length;y++){
-			for(int x=0;x</*terrain.get(y).size()*/terrain[y].length;x++){
-				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]/*terrain.get(y).get(x)*/);
+	public void render(int camerax){
+		for (int y=0; y<terrain.length;y++){
+			for(int x=0;x<terrain[y].length;x++){
+				Terrain.render(x*50 - camerax, Display.getHeight() - (y+1)*50, terrain[y][x]);
 			}
 		}
 	}
 	
-	public static Level fromFile(String filename){
+	public static Level fromFile(String filename, Game game){
 	// Reads a level in from a file and converts it to an object for use.
 		File file = new File("lvl/" + filename);
 		int startx, starty;
 		int[][] terrain;
-		// Initialize terrain 2D list with empty values.
-/*		List <List <Integer>> terrain = new ArrayList <List <Integer>>(12);
-		for(int y=0;y<12;y++){
-			terrain.add(new ArrayList<Integer>(24));
-			for(int x=0;x<24;x++){
-				terrain.get(y).add(null);
-			}
-		}*/
+
 		
 		try {
 			// Set up reader, read player start coords.
@@ -98,7 +79,6 @@ public class Level {
 			// Read terrain info.
 			for(int y=0;line != null && !line.startsWith("enem:");y++){
 				for(int x=0;x<line.length();x++){
-//					terrain.get(y).set(x, Character.getNumericValue(line.charAt(x)));
 					terrain[y][x] = Character.getNumericValue(line.charAt(x));
 				}
 				line = br.readLine();
@@ -111,7 +91,7 @@ public class Level {
 				int x = Integer.parseInt(info[0]);
 				int y = Integer.parseInt(info[1]);
 				int facing = (info[2] == "l" ? Entity.LEFT : Entity.RIGHT);
-				Enemy enemy = new Enemy(level, x, y, facing);
+				Enemy enemy = new Enemy(level, game, x, y, facing);
 				level.addEntity(enemy);
 				
 				line = br.readLine();
@@ -206,7 +186,7 @@ public class Level {
 		}
 	}
 
-	public /*List <List <Integer>>*/ int[][] getTerrain(){return terrain;}
+	public int[][] getTerrain(){return terrain;}
 	public String getName(){return this.name;}
 	public int getStartX(){return this.startx;}
 	public int getStartY(){return this.starty;}
