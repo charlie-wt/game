@@ -57,6 +57,7 @@ public class Game {
 	public void loadNextLevel(){
 		switch(level.getName()){
 			case "lvl1" : level = Level.fromFile("lvl2"); break;
+			case "lvl2" : level = Level.fromFile("lvl3"); break;
 		}
 		player.setLevel(level);
 	}

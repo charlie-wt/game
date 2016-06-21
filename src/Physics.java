@@ -17,13 +17,14 @@ public class Physics {
 
 		for(int y=bottom; y<=top; y++){
 			for(int x=left; x<=right; x++){
-				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
-					
+				int tile = level.getTerrain().get(11-y).get(x);
+				
+				if( tile != Terrain.BACKGROUND ){
 					if( entity.getClass().getName().equals("Player") ){
 					// Winning or dying, for the player only.
-						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
+						if( tile == Terrain.SPIKES ){
 							throw new DeadException();
-						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						}else if( tile == Terrain.GOAL ){
 							throw new WinException();
 						}
 					}
@@ -56,13 +57,14 @@ public class Physics {
 
 		for(int y=bottom; y<=top; y++){
 			for(int x=left; x<=right; x++){
-				if( level.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
-					
+				int tile = level.getTerrain().get(11-y).get(x);
+				
+				if( tile != Terrain.BACKGROUND ){
 					if( entity.getClass().getName().equals("Player") ){
 					// Winning or dying, for the player only.
-						if( level.getTerrain()[11-y][x] == Terrain.SPIKES ){
+						if( tile == Terrain.SPIKES ){
 							throw new DeadException();
-						}else if( level.getTerrain()[11-y][x] == Terrain.GOAL ){
+						}else if( tile == Terrain.GOAL ){
 							throw new WinException();
 						}
 					}
@@ -115,7 +117,7 @@ public class Physics {
 
 		for(int y=(ey>=ts?bottom-1:bottom); y<=bottom; y++){
 			for(int x=left; x<=right; x++){
-				if( l.getTerrain()[11-y][x] != Terrain.BACKGROUND ){
+				if( l.getTerrain().get(11-y).get(x) != Terrain.BACKGROUND ){
 					return e.getVY() <= 0 && ey <= (y+1)*ts && ey > y*ts;
 				}
 			}

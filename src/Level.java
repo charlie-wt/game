@@ -10,14 +10,14 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class Level {
-	private int[][] terrain = new int[12][24];
+	private List<List<Integer>> terrain = new ArrayList<List <Integer>>(12);
 	private ArrayList<Entity> entities;
 	Texture background = Game.loadTexture("sky");
 	private String name;
 	private int startx, starty;
 	public ArrayList<Entity> startentities;
 	
-	public Level(int[][] terrain, String name, int startx, int starty){
+	public Level(List<List<Integer>> terrain, String name, int startx, int starty){
 		this.terrain = terrain;
 		this.name = name;
 		this.startx = startx;
@@ -30,19 +30,16 @@ public class Level {
 	}
 	
 	public Level(String name, int startx, int starty){
-		int[][] tr = new int[12][24];
+		List<List<Integer>> tr = new ArrayList<List<Integer>>(12);
 		
 		for (int y=0; y<12;y++){
 			for(int x=0;x<24;x++){
 				if(y == 11){
-					tr[y][x] = Terrain.GRASS;
-					System.out.print(" G ");
+					tr.get(y).add(Terrain.GRASS);
 				}else{
-					tr[y][x] = Terrain.BACKGROUND;
-					System.out.print(" - ");
+					tr.get(y).add(Terrain.BACKGROUND);
 				}
 			}
-			System.out.println();
 		}
 		
 		this.terrain = tr;
@@ -57,9 +54,9 @@ public class Level {
 	}
 	
 	public void render(){
-		for (int y=0; y<terrain.length;y++){
-			for(int x=0;x<terrain[y].length;x++){
-				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain[y][x]);
+		for (int y=0; y<terrain.size();y++){
+			for(int x=0;x<terrain.get(y).size();x++){
+				Terrain.render(x*50, Display.getHeight() - (y+1)*50, terrain.get(y).get(x));
 			}
 		}
 	}
@@ -68,7 +65,19 @@ public class Level {
 	// Reads a level in from a file and converts it to an object for use.
 		File file = new File("lvl/" + filename);
 		int startx, starty;
-		int[][] terrain = new int[12][24];
+		List <List <Integer>> terrain = new ArrayList <List <Integer>>(12);
+		for(int y=0;y<12;y++){
+			terrain.add(new ArrayList<Integer>(24));
+			for(int x=0;x<24;x++){
+				terrain.get(y).add(null);
+			}
+		}
+/*		for(int y=0;y<terrain.size();y++){
+			for(int x=0;x<terrain.get(y).size();x++){
+				System.out.print(terrain.get(y).get(x) + "  ");
+			}
+			System.out.println();
+		}*/
 		try {
 			// Set up reader, read player start coords.
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -79,7 +88,7 @@ public class Level {
 			// Read terrain info.
 			for(int y=0;line != null && !line.startsWith("enem:");y++){
 				for(int x=0;x<line.length();x++){
-					terrain[y][x] = Character.getNumericValue(line.charAt(x));
+					terrain.get(y).set(x, Character.getNumericValue(line.charAt(x)));
 				}
 				line = br.readLine();
 			}
@@ -186,7 +195,7 @@ public class Level {
 		}
 	}
 
-	public int[][] getTerrain(){return terrain;}
+	public List <List <Integer>> getTerrain(){return terrain;}
 	public String getName(){return this.name;}
 	public int getStartX(){return this.startx;}
 	public int getStartY(){return this.starty;}
