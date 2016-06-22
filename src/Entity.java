@@ -78,10 +78,10 @@ public class Entity {
 	public boolean touchingEdge(int dir){
 	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
-			case LEFT:	return x <= 0;
-			case RIGHT:	return (x+w) >= level.getTerrain()[0].length*Terrain.size;
-			case UP:	return y+h >= Display.getHeight();
-			case DOWN:	return y <= 0;
+			case LEFT:	return x + vx <= 0;
+			case RIGHT:	return (x+w) + vx >= level.getTerrain()[0].length*Terrain.size;
+			case UP:	return y+h + vy >= Display.getHeight();
+			case DOWN:	return y + vy <= 0;
 		}
 		return true;
 	}

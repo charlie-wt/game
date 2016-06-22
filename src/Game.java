@@ -62,7 +62,6 @@ public class Game {
 		}else if( player.getX() < camerax + (Display.getWidth() / 2) - (camerawidth / 2) && player.getEffectiveVX() < 0 && isSpace ){
 			camerax += player.getVX();
 		}
-//		Display.setTitle("   Camera: " + camerax + "   X: " + player.getX() + "   eVX: " + player.getEffectiveVX() + "   eVY: " + player.getEffectiveVY());
 	}
 	
 	public void getInput(){
@@ -88,6 +87,4 @@ public class Game {
 	public void resetCamera(){
 		camerax = 0;
 	}
-	
-	public int getCX(){return camerax;}
 }

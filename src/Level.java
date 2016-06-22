@@ -54,8 +54,15 @@ public class Level {
 	}
 	
 	public void render(int camerax){
-		for (int y=0; y<terrain.length;y++){
-			for(int x=0;x<terrain[y].length;x++){
+		// For only attempting to render tiles that will be seen by the player.
+		int cameraleft  = (camerax - (camerax%Terrain.size))/Terrain.size;
+		int camerawidth = ((camerax+Display.getWidth()) - ((camerax+Display.getWidth())%Terrain.size))/Terrain.size - cameraleft;
+		int cameraright = cameraleft + camerawidth;
+		int leftmost = (cameraleft - 1 < 0 ? 0 : cameraleft - 1);
+		int rightmost = (cameraright + 1 > terrain[0].length ? terrain[0].length : cameraright + 1);
+		
+		for(int y=0; y<terrain.length;y++){
+			for(int x=leftmost;x<rightmost;x++){
 				Terrain.render(x*50 - camerax, Display.getHeight() - (y+1)*50, terrain[y][x]);
 			}
 		}
