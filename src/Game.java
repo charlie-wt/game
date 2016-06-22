@@ -55,14 +55,14 @@ public class Game {
 		level.removeEntities(toKill);
 		
 		// Apply scrolling, if there's space for it and the player's off to one side.
-		boolean isSpace = Display.getWidth() + (camerax + player.getVX()) <= level.getTerrain()[0].length*Terrain.size && camerax + player.getVX() >= -100;
+		boolean isSpace = Display.getWidth() + (camerax + player.getVX()) <= level.getTerrain()[0].length*Terrain.size && camerax + player.getVX() >= 0;
 		
-		if( player.getX() > (Display.getWidth() / 2) + (camerawidth / 2) && player.getVX() > 0 && isSpace ){
+		if( player.getX() > camerax + (Display.getWidth() / 2) + (camerawidth / 2) && player.getEffectiveVX() > 0 && isSpace ){
 			camerax += player.getVX();
-		}else if( player.getX() < (Display.getWidth() / 2) - (camerawidth / 2) && player.getVX() < 0 && isSpace ){
+		}else if( player.getX() < camerax + (Display.getWidth() / 2) - (camerawidth / 2) && player.getEffectiveVX() < 0 && isSpace ){
 			camerax += player.getVX();
 		}
-		Display.setTitle("Display width: " + Display.getWidth() + "   Level width: " + level.getTerrain()[0].length*Terrain.size + "   Camera: " + camerax);
+//		Display.setTitle("   Camera: " + camerax + "   X: " + player.getX() + "   eVX: " + player.getEffectiveVX() + "   eVY: " + player.getEffectiveVY());
 	}
 	
 	public void getInput(){

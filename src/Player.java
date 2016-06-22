@@ -4,11 +4,11 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.Texture;
 
 public class Player extends Entity {
-	private File winSound, deathSound, killSound;
+	private static final int walklength = 6, walkdelay = 4;
+	private int texnum = 0;
 	private Texture standtexture, jumptexture, airhangtexture, falltexture;
 	private ArrayList<Texture> walktextures;
-	private int texnum = 0;
-	private static final int walklength = 6, walkdelay = 4;
+	private File winSound, deathSound, killSound;
 
 	public Player(Level level, Game game){
 		this.x = level.getStartX();
@@ -112,6 +112,8 @@ public class Player extends Entity {
 		game.resetCamera();
 		vx = 0;
 		vy = 0;
+		effectivevx = 0;
+		effectivevy = 0;
 		jumpFlag = false;
 		texture = standtexture;
 		level.resetEnemies();
@@ -125,6 +127,8 @@ public class Player extends Entity {
 		y = level.getStartY();
 		vx = 0;
 		vy = 0;
+		effectivevx = 0;
+		effectivevy = 0;
 		jumpFlag = false;
 		texture = standtexture;
 	}

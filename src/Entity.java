@@ -11,6 +11,7 @@ public class Entity {
 	protected int x, y;
 	protected int w, h;
 	protected float vx, vy;
+	protected float effectivevx = 0, effectivevy = 0;
 	protected int walkspeed, jumpspeed;
 	protected Texture texture;
 	protected float gravity = 0.5f;
@@ -68,15 +69,17 @@ public class Entity {
 	
 	public void updatePos() throws DeadException, WinException {
 		if( Physics.getCollisionY(this, level) > 0 ) {vy = 0; jumpFlag = true;}else{jumpFlag = false;}
-		x += vx + Physics.getCollisionX(this, level);
-		y += vy + Physics.getCollisionY(this, level);
+		effectivevx = vx + Physics.getCollisionX(this, level);
+		effectivevy = vy + Physics.getCollisionY(this, level);
+		x += effectivevx;
+		y += effectivevy;
 	}
 	
 	public boolean touchingEdge(int dir){
 	// Returns true if the player is currently up against an edge of the stage (or direction is invalid).
 		switch(dir){
 			case LEFT:	return x <= 0;
-			case RIGHT:	return (x+w+game.getCX()) >= level.getTerrain()[0].length*Terrain.size;
+			case RIGHT:	return (x+w) >= level.getTerrain()[0].length*Terrain.size;
 			case UP:	return y+h >= Display.getHeight();
 			case DOWN:	return y <= 0;
 		}
@@ -103,5 +106,7 @@ public class Entity {
 	public int getH(){return h;}
 	public float getVX(){return vx;}
 	public float getVY(){return vy;}
+	public float getEffectiveVX(){return effectivevx;}
+	public float getEffectiveVY(){return effectivevy;}
 	public void setLevel(Level level){this.level = level;}
 }
