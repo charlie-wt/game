@@ -46,7 +46,7 @@ public class Enemy extends Entity {
 		
 		try {
 			updatePos();
-		} catch (DeadException | WinException e) {e.printStackTrace();}
+		} catch (DeadException | WinException e) {System.out.println("updatePos"); e.printStackTrace();}
 		
 		animateTexture();
 	}
@@ -57,7 +57,7 @@ public class Enemy extends Entity {
 			if( touchingEdge(LEFT) || touchingEdge(RIGHT) || Physics.getCollisionX(this, level) != 0 ){
 				swapDir();
 			}
-		} catch (DeadException | WinException e) {e.printStackTrace();}
+		} catch (DeadException | WinException e) {System.out.println("ai"); e.printStackTrace();}
 	}
 	
 	public void animateTexture(){

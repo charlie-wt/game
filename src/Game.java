@@ -44,12 +44,14 @@ public class Game {
 				if(Physics.isStomping(player, e)){
 					toKill.add(e);
 				}else{			
-					player.die();
+					player.die(false);
 					hasDied = true;
 				}
 			}
 		}
-		if( !toKill.isEmpty() && !hasDied ){
+		if( hasDied ){
+			level.resetEnemies();
+		} else if( !toKill.isEmpty() ){
 			player.kill();
 		}		
 		level.removeEntities(toKill);

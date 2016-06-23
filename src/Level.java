@@ -180,11 +180,14 @@ public class Level {
 	}
 	
 	public void resetEnemies(){
+//		ArrayList<Entity> toAdd = new ArrayList<Entity>();
+		
 		for(Entity e : startentities){
 			if (!entities.contains(e)){
 				entities.add(e);
 			}
 		}
+//		entities.addAll(toAdd);
 		for(Entity e : entities){
 			if(e.getClass().getName().equals("Enemy")){
 				Enemy enem = (Enemy)e;

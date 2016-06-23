@@ -58,7 +58,7 @@ public class Player extends Entity {
 		try {
 			updatePos();
 		} catch (DeadException e) {
-			die();
+			die(true);
 		} catch (WinException e) {
 			win();
 		}	
@@ -103,7 +103,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void die(){
+	public void die(boolean resetEnemies){
 	// If the player touches spikes, or an enemy.
 		playSound(deathSound);
 		x = level.getStartX();
@@ -115,7 +115,9 @@ public class Player extends Entity {
 		effectivevy = 0;
 		jumpFlag = false;
 		texture = standtexture;
-		level.resetEnemies();
+		if(resetEnemies){			
+			level.resetEnemies();
+		}
 	}
 	
 	public void win(){
