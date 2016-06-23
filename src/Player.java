@@ -105,6 +105,7 @@ public class Player extends Entity {
 	
 	public void die(boolean resetEnemies){
 	// If the player touches spikes, or an enemy.
+	// Boolean is whether or not you want to call level.resetEnemies manually later, to avoid ConcurrentModificationExceptions to level.entities.
 		playSound(deathSound);
 		x = level.getStartX();
 		y = level.getStartY();
