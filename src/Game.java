@@ -20,8 +20,7 @@ public class Game {
 		this.player = new Player(level, this);
 		this.camerax = 0;
 		this.camerawidth = 600;
-		Texture option = Game.loadTexture("text/play");
-		Texture[] options = {option};
+		String[] options = {"play","noplay"};
 		this.mainmenu = new Menu("Main Menu", "title", options);
 	}
 
@@ -37,6 +36,7 @@ public class Game {
 	
 	public void update(){
 	// Game logic.
+		mainmenu.update();
 /*		player.update();
 		
 		// Updating the level entities. Checking whether the player has died, or killed an enemy.

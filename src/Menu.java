@@ -1,6 +1,5 @@
 import static org.lwjgl.opengl.GL11.*;
-
-import java.util.ArrayList;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
@@ -9,14 +8,19 @@ public class Menu {
 	private Texture titletex;
 	Texture[] options;
 	
-	public Menu (String title, String titletex, Texture[] options) {
+	public Menu (String title, String titletex, String[] options) {
 		this.title = title;
 		Display.setTitle(title);
 		this.titletex = Game.loadTexture(titletex);
-		this.options = options;
+		Texture[] o = new Texture[options.length];
+		for(int i=0;i<options.length;i++){
+			o[i] = Game.loadTexture("text/" + options[i]);
+		}
+		
+		this.options = o;
 	}
 	
-	public Menu (String title, Texture[] options) {
+	public Menu (String title, String[] options) {
 		this(title, null, options);
 	}
 	
@@ -33,16 +37,32 @@ public class Menu {
 	}
 	
 	public int getY (int index) {
-		return 800 - options[index].getImageHeight() - index*100;
+		return 300 - index*options[index].getImageHeight() - index*10;
 	}
 	
 	public void render () {
 		drawTitle();
-		drawOption();
+		for(int i=0;i<options.length;i++){
+			drawOption(i);
+		}
 	}
 	
 	public void update () {
-		
+	// Checking if mouse is over any buttons.
+		for(int i=0;i<options.length;i++){
+			boolean isInX = Mouse.getX() >= getX(i) && Mouse.getX() <= getX(i) + options[i].getImageWidth();
+			boolean isInY = Mouse.getY() >= getY(i) && Mouse.getY() <= getY(i) + options[i].getImageHeight();
+			
+			if(isInX && isInY){
+				if(Mouse.isButtonDown(0)){
+					// TODO - Not a perfect solution, as is usually triggered multiple times on click, but given the actions that will be performed on click this may not matter.
+					System.out.println("Woah!");
+				}
+				Display.setTitle("In.");
+			}else{
+				Display.setTitle("Out.");
+			}
+		}
 	}
 	
 	public void drawTitle () {
@@ -81,8 +101,8 @@ public class Menu {
 		}glPopMatrix();
 	}
 	
-	public void drawOption () {
-		Texture tex = Game.loadTexture("text/play");
+	public void drawOption (int index) {
+		Texture tex = options[index];
 		float w, h;
 		int iw, ih, x, y;
 
@@ -95,8 +115,8 @@ public class Menu {
 			h = tex.getHeight();
 			iw = tex.getImageWidth();
 			ih = tex.getImageHeight();
-			x = (Display.getWidth() / 2) - (iw/2);
-			y = 350 - ih;
+			x = getX(index);
+			y = getY(index);
 
 			glTranslatef(x, y, 0);
 			glRotatef(0, 0, 0, 1);

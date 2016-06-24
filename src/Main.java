@@ -1,5 +1,6 @@
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
@@ -24,6 +25,7 @@ public class Main {
 				Display.create();
 				Display.setVSyncEnabled(true);
 				Keyboard.create();
+				Mouse.create();
 			} catch (LWJGLException e) {e.printStackTrace();}
 
 		// OpenGL
@@ -69,6 +71,7 @@ public class Main {
 
 	public static void cleanup(){
 		Keyboard.destroy();
+		Mouse.destroy();
 		Display.destroy();
 	}
 }
