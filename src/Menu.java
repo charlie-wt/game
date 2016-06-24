@@ -1,13 +1,4 @@
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
@@ -21,7 +12,7 @@ public class Menu {
 	public Menu (String title, String titletex, Texture[] options) {
 		this.title = title;
 		Display.setTitle(title);
-		this.titletex = Game.loadTexture("res/" + titletex);
+		this.titletex = Game.loadTexture(titletex);
 		this.options = options;
 	}
 	
@@ -46,6 +37,15 @@ public class Menu {
 	}
 	
 	public void render () {
+		drawTitle();
+		drawOption();
+	}
+	
+	public void update () {
+		
+	}
+	
+	public void drawTitle () {
 		float w, h;
 		int iw, ih, x, y;
 		
@@ -81,7 +81,40 @@ public class Menu {
 		}glPopMatrix();
 	}
 	
-	public void update () {
-		
+	public void drawOption () {
+		Texture tex = Game.loadTexture("text/play");
+		float w, h;
+		int iw, ih, x, y;
+
+		glPushMatrix();{
+			// Set color, translation (location), rotation & texture.
+			glColor3f(1f, 1f, 1f);
+			tex.bind();
+
+			w = tex.getWidth();
+			h = tex.getHeight();
+			iw = tex.getImageWidth();
+			ih = tex.getImageHeight();
+			x = (Display.getWidth() / 2) - (iw/2);
+			y = 350 - ih;
+
+			glTranslatef(x, y, 0);
+			glRotatef(0, 0, 0, 1);
+
+			// Draw the points to form the shape.
+			glBegin(GL_QUADS);{
+				glTexCoord2f(0,h);
+				glVertex2f(0,0);
+
+				glTexCoord2f(w,h);
+				glVertex2f(iw,0);
+
+				glTexCoord2f(w,0);
+				glVertex2f(iw,ih);
+
+				glTexCoord2f(0,0);
+				glVertex2f(0,ih);
+			}glEnd();
+		}glPopMatrix();
 	}
 }

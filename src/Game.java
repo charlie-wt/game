@@ -12,6 +12,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 public class Game {
 	private Player player;
 	private Level level;
+	private Menu mainmenu;
 	private int camerax, camerawidth;
 
 	public Game(){
@@ -19,12 +20,14 @@ public class Game {
 		this.player = new Player(level, this);
 		this.camerax = 0;
 		this.camerawidth = 600;
+		Texture option = Game.loadTexture("text/play");
+		Texture[] options = {option};
+		this.mainmenu = new Menu("Main Menu", "title", options);
 	}
 
 	public void render(){
 		level.drawBackground();
-		drawTitle();
-		drawOption();
+		mainmenu.render();
 /*		player.render(camerax);
 		for (Entity e : level.getEntities()){
 			e.render(camerax);
@@ -90,79 +93,5 @@ public class Game {
 	
 	public void resetCamera(){
 		camerax = 0;
-	}
-	
-	public void drawTitle () {
-		Texture titletex = loadTexture("title");
-		float w, h;
-		int iw, ih, x, y;
-		
-		glPushMatrix();{
-			// Set color, translation (location), rotation & texture.
-			glColor3f(1f, 1f, 1f);
-			titletex.bind();
-			
-			w = titletex.getWidth();
-			h = titletex.getHeight();
-			iw = titletex.getImageWidth();
-			ih = titletex.getImageHeight();
-			x = (Display.getWidth() / 2) - (iw/2);
-			y = ((Display.getHeight() / 2) - (ih/2)) + 200;
-			
-			glTranslatef(x, y, 0);
-			glRotatef(0, 0, 0, 1);
-
-			// Draw the points to form the shape.
-			glBegin(GL_QUADS);{
-				glTexCoord2f(0,h);
-				glVertex2f(0,0);
-
-				glTexCoord2f(w,h);
-				glVertex2f(iw,0);
-
-				glTexCoord2f(w,0);
-				glVertex2f(iw,ih);
-
-				glTexCoord2f(0,0);
-				glVertex2f(0,ih);
-			}glEnd();
-		}glPopMatrix();
-	}
-	
-	public void drawOption () {
-		Texture tex = loadTexture("text/play");
-		float w, h;
-		int iw, ih, x, y;
-		
-		glPushMatrix();{
-			// Set color, translation (location), rotation & texture.
-			glColor3f(1f, 1f, 1f);
-			tex.bind();
-			
-			w = tex.getWidth();
-			h = tex.getHeight();
-			iw = tex.getImageWidth();
-			ih = tex.getImageHeight();
-			x = (Display.getWidth() / 2) - (iw/2);
-			y = 350 - ih;
-			
-			glTranslatef(x, y, 0);
-			glRotatef(0, 0, 0, 1);
-
-			// Draw the points to form the shape.
-			glBegin(GL_QUADS);{
-				glTexCoord2f(0,h);
-				glVertex2f(0,0);
-
-				glTexCoord2f(w,h);
-				glVertex2f(iw,0);
-
-				glTexCoord2f(w,0);
-				glVertex2f(iw,ih);
-
-				glTexCoord2f(0,0);
-				glVertex2f(0,ih);
-			}glEnd();
-		}glPopMatrix();
 	}
 }
