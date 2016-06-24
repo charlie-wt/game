@@ -1,10 +1,10 @@
+import static org.lwjgl.opengl.GL11.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -23,16 +23,18 @@ public class Game {
 
 	public void render(){
 		level.drawBackground();
-		player.render(camerax);
+		drawTitle();
+		drawOption();
+/*		player.render(camerax);
 		for (Entity e : level.getEntities()){
 			e.render(camerax);
 		}
-		level.render(camerax);
+		level.render(camerax);*/
 	}
 	
 	public void update(){
 	// Game logic.
-		player.update();
+/*		player.update();
 		
 		// Updating the level entities. Checking whether the player has died, or killed an enemy.
 		boolean hasDied = false;
@@ -63,7 +65,7 @@ public class Game {
 			camerax += player.getVX();
 		}else if( player.getX() < camerax + (Display.getWidth() / 2) - (camerawidth / 2) && player.getEffectiveVX() < 0 && isSpace ){
 			camerax += player.getVX();
-		}
+		}*/
 	}
 	
 	public void getInput(){
@@ -88,5 +90,79 @@ public class Game {
 	
 	public void resetCamera(){
 		camerax = 0;
+	}
+	
+	public void drawTitle () {
+		Texture titletex = loadTexture("title");
+		float w, h;
+		int iw, ih, x, y;
+		
+		glPushMatrix();{
+			// Set color, translation (location), rotation & texture.
+			glColor3f(1f, 1f, 1f);
+			titletex.bind();
+			
+			w = titletex.getWidth();
+			h = titletex.getHeight();
+			iw = titletex.getImageWidth();
+			ih = titletex.getImageHeight();
+			x = (Display.getWidth() / 2) - (iw/2);
+			y = ((Display.getHeight() / 2) - (ih/2)) + 200;
+			
+			glTranslatef(x, y, 0);
+			glRotatef(0, 0, 0, 1);
+
+			// Draw the points to form the shape.
+			glBegin(GL_QUADS);{
+				glTexCoord2f(0,h);
+				glVertex2f(0,0);
+
+				glTexCoord2f(w,h);
+				glVertex2f(iw,0);
+
+				glTexCoord2f(w,0);
+				glVertex2f(iw,ih);
+
+				glTexCoord2f(0,0);
+				glVertex2f(0,ih);
+			}glEnd();
+		}glPopMatrix();
+	}
+	
+	public void drawOption () {
+		Texture tex = loadTexture("text/play");
+		float w, h;
+		int iw, ih, x, y;
+		
+		glPushMatrix();{
+			// Set color, translation (location), rotation & texture.
+			glColor3f(1f, 1f, 1f);
+			tex.bind();
+			
+			w = tex.getWidth();
+			h = tex.getHeight();
+			iw = tex.getImageWidth();
+			ih = tex.getImageHeight();
+			x = (Display.getWidth() / 2) - (iw/2);
+			y = 350 - ih;
+			
+			glTranslatef(x, y, 0);
+			glRotatef(0, 0, 0, 1);
+
+			// Draw the points to form the shape.
+			glBegin(GL_QUADS);{
+				glTexCoord2f(0,h);
+				glVertex2f(0,0);
+
+				glTexCoord2f(w,h);
+				glVertex2f(iw,0);
+
+				glTexCoord2f(w,0);
+				glVertex2f(iw,ih);
+
+				glTexCoord2f(0,0);
+				glVertex2f(0,ih);
+			}glEnd();
+		}glPopMatrix();
 	}
 }
