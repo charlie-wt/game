@@ -31,10 +31,12 @@ public class Physics {
 						}
 					}
 					
-					if( entity.getVX() > 0 ){
+					boolean isWithinY = ey + eh > y*ts;
+					
+					if( entity.getVX() > 0 && isWithinY ){
 						return ((ex+ew) - x*ts)*-1;
 					}
-					else if( entity.getVX() < 0 ){
+					else if( entity.getVX() < 0 && isWithinY ){
 						return (x+1)*ts - ex;
 					}
 				}
