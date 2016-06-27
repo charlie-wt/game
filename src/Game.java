@@ -13,7 +13,7 @@ public class Game {
 	
 	private Player player;
 	private Level level;
-	private Menu mainmenu;
+	private Menu mainmenu, pausemenu, winmenu;
 	private int camerax, camerawidth;
 	private int state = MAINMENU;
 
@@ -26,9 +26,19 @@ public class Game {
 		this.camerax = 0;
 		this.camerawidth = 600;
 		
+		Option quit = new QuitOption(this, "quit");
+		
 		Option play = new PlayOption(this, "play");
-		Option[] options = {play};
-		this.mainmenu = new Menu("title", options);
+		Option[] mainoptions = {play, quit};
+		this.mainmenu = new Menu("title", mainoptions);
+		
+		Option resume = new PlayOption(this, "resume");
+		Option[] pauseoptions = {resume, quit};
+		this.pausemenu = new Menu("title", pauseoptions);
+		
+		Option restart = new PlayOption(this, "restart");
+		Option[] winoptions = {restart, quit};
+		this.winmenu = new Menu("title", winoptions);
 	}
 
 	public void render(){
@@ -44,8 +54,17 @@ public class Game {
 				}
 				level.render(camerax);
 				break;
-			case PAUSED: break;
-			case WIN: break;
+			case PAUSED: 
+				player.render(camerax);
+				for (Entity e : level.getEntities()){
+					e.render(camerax);
+				}
+				level.render(camerax);
+				pausemenu.render();
+				break;
+			case WIN:
+				winmenu.render();
+				break;
 		}
 	}
 	
@@ -89,8 +108,12 @@ public class Game {
 					camerax += player.getVX();
 				}
 				break;
-			case PAUSED: break;
-			case WIN: break;
+			case PAUSED:
+				pausemenu.update();
+				break;
+			case WIN:
+				winmenu.update();
+				break;
 		}
 	}
 	
@@ -103,6 +126,7 @@ public class Game {
 		switch(level.getName()){
 			case "lvl1" : level = Level.fromFile("lvl2", this); break;
 			case "lvl2" : level = Level.fromFile("lvl3", this); break;
+			default: state = WIN; level = Level.fromFile("lvl1", this); break;
 		}
 		player.setLevel(level);
 	}
@@ -116,6 +140,10 @@ public class Game {
 	
 	public void resetCamera(){
 		camerax = 0;
+	}
+	
+	public void pause(){
+		state = PAUSED;
 	}
 	
 	public void setState(int state){this.state = state;}

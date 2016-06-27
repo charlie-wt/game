@@ -1,4 +1,5 @@
 import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
@@ -24,6 +25,10 @@ public class Menu {
 	
 	public void update () {
 	// Checking if mouse is over any buttons.
+		if (selectFirst()) {
+			options[0].activate();
+		}
+		
 		for(int i=0;i<options.length;i++){
 			boolean isInX = Mouse.getX() >= options[i].getX() && Mouse.getX() <= options[i].getX() + options[i].getTex().getImageWidth();
 			boolean isInY = Mouse.getY() >= options[i].getY() && Mouse.getY() <= options[i].getY() + options[i].getTex().getImageHeight();
@@ -32,6 +37,10 @@ public class Menu {
 				options[i].activate();
 			}
 		}
+	}
+	
+	public boolean selectFirst(){
+		return Keyboard.isKeyDown(Keyboard.KEY_SPACE) || Keyboard.isKeyDown(Keyboard.KEY_RETURN);
 	}
 	
 	public void drawTitle () {

@@ -38,6 +38,9 @@ public class Player extends Entity {
 
 	public void getInput(){
 	// Key press -> character movement.
+		if(pressPause()){
+			game.pause();
+		}
 		if(pressJump()){
 			move(UP);
 		}
@@ -141,6 +144,7 @@ public class Player extends Entity {
 		vy = jumpspeed;
 	}
 	
+	private boolean pressPause(){ return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_P); }
 	private boolean pressJump() { return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_SPACE); }
 	private boolean pressLeft() { return Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT); }
 	private boolean pressRight(){ return Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT); }
