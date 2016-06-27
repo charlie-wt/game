@@ -1,4 +1,8 @@
+package Game;
 import java.awt.Rectangle;
+import Entities.Entity;
+import Exceptions.DeadException;
+import Exceptions.WinException;
 
 public class Physics {
 	public static int getCollisionX(Entity entity, Level level) throws DeadException, WinException {
@@ -22,7 +26,7 @@ public class Physics {
 				int tile = level.getTerrain()[(th-1)-y][x];
 				
 				if( tile != Terrain.BACKGROUND ){
-					if( entity.getClass().getName().equals("Player") ){
+					if( entity.getClass().getName().equals("Entities.Player") ){
 					// Winning or dying, for the player only.
 						if( tile == Terrain.SPIKES ){
 							throw new DeadException();
@@ -66,7 +70,7 @@ public class Physics {
 				int tile = level.getTerrain()[(th-1)-y][x];
 				
 				if( tile != Terrain.BACKGROUND ){
-					if( entity.getClass().getName().equals("Player") ){
+					if( entity.getClass().getName().equals("Entities.Player") ){
 					// Winning or dying, for the player only.
 						if( tile == Terrain.SPIKES ){
 							throw new DeadException();

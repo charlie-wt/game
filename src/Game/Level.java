@@ -1,3 +1,4 @@
+package Game;
 import static org.lwjgl.opengl.GL11.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
+import Entities.Enemy;
+import Entities.Entity;
 
 public class Level {
 	private int[][] terrain;
@@ -74,7 +77,6 @@ public class Level {
 		int startx, starty;
 		int[][] terrain;
 
-		
 		try {
 			// Set up reader, read player start coords.
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -186,7 +188,7 @@ public class Level {
 			}
 		}
 		for(Entity e : entities){
-			if(e.getClass().getName().equals("Enemy")){
+			if(e.getClass().getName().equals("Entities.Enemy")){
 				Enemy enem = (Enemy)e;
 				enem.reset();
 			}

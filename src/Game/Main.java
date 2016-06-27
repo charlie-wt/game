@@ -1,3 +1,4 @@
+package Game;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -32,7 +33,7 @@ public class Main {
 			// Basics of clearing/preparing the screen for 2D. 
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
-			glOrtho(0, Display.getWidth(), 0, Display.getHeight(), -1, 1);		/* Orthographic projection, from 0 to window size on x and y and nothing on z axis. */
+			glOrtho(0, Display.getWidth(), 0, Display.getHeight(), -1, 1);		// Orthographic projection, from 0 to window size on x and y and nothing on z axis.
 			glMatrixMode(GL_MODELVIEW);
 			glClearColor(0f, 0f, 0f, 1);
 			glDisable(GL_DEPTH_TEST);

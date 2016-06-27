@@ -16,4 +16,22 @@ X Enemies.
 X Sounds.
 X Animated sprites.
 X Scrolling levels.
-- A main menu.
+X A main menu.
+
+MORE IDEAS, FOR MORE TIME
+- Parallax scrolling (Clouds).
+- Rounded textures for some terrain (& better terrain textures in general).
+- Music.
+- Worlds, with themes.
+- More sounds.
+- Kick up dust when starting run.
+- Bigger (or otherwise changed) menu text on hover.
+- Saving & loading progress.
+- Level select.
+- More enemies (& boss).
+- Moving platform entity.
+- Projectile entity? (link into boss)
+- Complete set of levels.
+- Icon.
+- Make proper executable.
+- Upload somewhere.

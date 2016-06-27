@@ -1,7 +1,13 @@
+package Entities;
 import java.io.File;
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.Texture;
+import Exceptions.DeadException;
+import Exceptions.WinException;
+import Game.Game;
+import Game.Level;
+import Game.Physics;
 
 public class Player extends Entity {
 	private static final int walklength = 6, walkdelay = 4;
@@ -64,7 +70,7 @@ public class Player extends Entity {
 			die(true);
 		} catch (WinException e) {
 			win();
-		}	
+		}
 
 		animateTexture();
 	}
@@ -110,18 +116,7 @@ public class Player extends Entity {
 	// If the player touches spikes, or an enemy.
 	// Boolean is whether or not you want to call level.resetEnemies manually later, to avoid ConcurrentModificationExceptions to level.entities.
 		playSound(deathSound);
-		x = level.getStartX();
-		y = level.getStartY();
-		game.resetCamera();
-		vx = 0;
-		vy = 0;
-		effectivevx = 0;
-		effectivevy = 0;
-		jumpFlag = false;
-		texture = standtexture;
-		if(resetEnemies){			
-			level.resetEnemies();
-		}
+		resetLevel(resetEnemies);
 	}
 	
 	public void win(){
@@ -142,6 +137,21 @@ public class Player extends Entity {
 	// Is the reaction to killing; doesn't actually kill anything.
 		playSound(killSound);
 		vy = jumpspeed;
+	}
+	
+	public void resetLevel(boolean resetEnemies){
+		x = level.getStartX();
+		y = level.getStartY();
+		game.resetCamera();
+		vx = 0;
+		vy = 0;
+		effectivevx = 0;
+		effectivevy = 0;
+		jumpFlag = false;
+		texture = standtexture;
+		if(resetEnemies){
+			level.resetEnemies();
+		}
 	}
 	
 	private boolean pressPause(){ return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_P); }

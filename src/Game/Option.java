@@ -1,3 +1,4 @@
+package Game;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
@@ -6,7 +7,6 @@ public abstract class Option {
 	protected Game game;
 	protected String name;
 	protected Texture tex;
-	protected int index;
 	
 	public Option (Game game, String name) {
 		this.game = game;
@@ -14,24 +14,17 @@ public abstract class Option {
 		this.tex = Game.loadTexture("text/" + name);
 	}
 	
-	public Option (Game game, String name, int index) {
-		this.game = game;
-		this.name = name;
-		this.tex = Game.loadTexture("text/" + name);
-		this.index = index;
-	}
-	
 	public abstract void activate ();
 	
-	public int getX () {
+	public int getX (int index) {
 		return (Display.getWidth()/2) - (tex.getImageWidth()/2);
 	}
 	
-	public int getY () {
+	public int getY (int index) {
 		return 300 - index*tex.getImageHeight() - index*10;
 	}
 	
-	public void drawOption () {
+	public void drawOption (int index) {
 		float w, h;
 		int iw, ih, x, y;
 
@@ -44,8 +37,8 @@ public abstract class Option {
 			h = tex.getHeight();
 			iw = tex.getImageWidth();
 			ih = tex.getImageHeight();
-			x = getX();
-			y = getY();
+			x = getX(index);
+			y = getY(index);
 
 			glTranslatef(x, y, 0);
 			glRotatef(0, 0, 0, 1);
@@ -70,5 +63,4 @@ public abstract class Option {
 	public Game getGame(){return game;}
 	public String getName(){return name;}
 	public Texture getTex(){return tex;}
-	public void setIndex(int index){this.index = index;}
 }

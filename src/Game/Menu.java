@@ -1,3 +1,4 @@
+package Game;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -11,15 +12,12 @@ public class Menu {
 	public Menu (String titletex, Option[] options) {
 		this.titletex = Game.loadTexture(titletex);
 		this.options = options;
-		for (int i=0;i<options.length;i++) {
-			options[i].setIndex(i);
-		}
-	}
+}
 	
 	public void render () {
 		drawTitle();
 		for(int i=0;i<options.length;i++){
-			options[i].drawOption();
+			options[i].drawOption(i);
 		}
 	}
 	
@@ -30,8 +28,8 @@ public class Menu {
 		}
 		
 		for(int i=0;i<options.length;i++){
-			boolean isInX = Mouse.getX() >= options[i].getX() && Mouse.getX() <= options[i].getX() + options[i].getTex().getImageWidth();
-			boolean isInY = Mouse.getY() >= options[i].getY() && Mouse.getY() <= options[i].getY() + options[i].getTex().getImageHeight();
+			boolean isInX = Mouse.getX() >= options[i].getX(i) && Mouse.getX() <= options[i].getX(i) + options[i].getTex().getImageWidth();
+			boolean isInY = Mouse.getY() >= options[i].getY(i) && Mouse.getY() <= options[i].getY(i) + options[i].getTex().getImageHeight();
 			
 			if(isInX && isInY && Mouse.isButtonDown(0)){
 				options[i].activate();

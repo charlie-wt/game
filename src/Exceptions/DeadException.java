@@ -1,3 +1,4 @@
+package Exceptions;
 public class DeadException extends Exception {
 	private static final long serialVersionUID = 1L;
 	public DeadException() { super(); }

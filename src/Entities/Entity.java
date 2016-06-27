@@ -1,9 +1,16 @@
+package Entities;
 import static org.lwjgl.opengl.GL11.*;
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
+import Exceptions.DeadException;
+import Exceptions.WinException;
+import Game.Game;
+import Game.Level;
+import Game.Physics;
+import Game.Terrain;
 
 public class Entity {
 	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
@@ -22,7 +29,7 @@ public class Entity {
 
 	public void update() {
 	// Gravity only.
-		checkGravity();		
+		checkGravity();
 	}
 	
 	public void render(int camerax){

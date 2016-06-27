@@ -1,3 +1,4 @@
+package Game;
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.opengl.Texture;
 

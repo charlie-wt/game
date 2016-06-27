@@ -1,6 +1,11 @@
+package Entities;
 import java.util.ArrayList;
-
 import org.newdawn.slick.opengl.Texture;
+import Exceptions.DeadException;
+import Exceptions.WinException;
+import Game.Game;
+import Game.Level;
+import Game.Physics;
 
 public class Enemy extends Entity {
 	private int startx, starty, startdir;
@@ -40,7 +45,7 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(){
-		ai();	
+		ai();
 		
 		super.update();
 		

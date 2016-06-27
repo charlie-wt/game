@@ -1,3 +1,4 @@
+package Game;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +8,11 @@ import java.util.List;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import Entities.Entity;
+import Entities.Player;
+import Options.PlayOption;
+import Options.QuitOption;
+import Options.RestartOption;
 
 public class Game {
 	public static final int MAINMENU = 0, GAMEPLAY = 1, PAUSED = 2, WIN = 3;
@@ -27,18 +33,18 @@ public class Game {
 		this.camerawidth = 600;
 		
 		Option quit = new QuitOption(this, "quit");
+		Option restart = new RestartOption(this, "restart");
 		
 		Option play = new PlayOption(this, "play");
 		Option[] mainoptions = {play, quit};
 		this.mainmenu = new Menu("title", mainoptions);
 		
 		Option resume = new PlayOption(this, "resume");
-		Option[] pauseoptions = {resume, quit};
-		this.pausemenu = new Menu("title", pauseoptions);
+		Option[] pauseoptions = {resume, restart, quit};
+		this.pausemenu = new Menu("paused", pauseoptions);
 		
-		Option restart = new PlayOption(this, "restart");
 		Option[] winoptions = {restart, quit};
-		this.winmenu = new Menu("title", winoptions);
+		this.winmenu = new Menu("winner", winoptions);
 	}
 
 	public void render(){
@@ -54,7 +60,7 @@ public class Game {
 				}
 				level.render(camerax);
 				break;
-			case PAUSED: 
+			case PAUSED:
 				player.render(camerax);
 				for (Entity e : level.getEntities()){
 					e.render(camerax);
@@ -86,7 +92,7 @@ public class Game {
 					if(Physics.touchingEntity(player, e)){
 						if(Physics.isStomping(player, e)){
 							toKill.add(e);
-						}else{			
+						}else{
 							player.die(false);
 							hasDied = true;
 						}
@@ -96,7 +102,7 @@ public class Game {
 					level.resetEnemies();
 				} else if( !toKill.isEmpty() ){
 					player.kill();
-				}		
+				}
 				level.removeEntities(toKill);
 				
 				// Apply scrolling, if there's space for it and the player's off to one side.
@@ -147,4 +153,6 @@ public class Game {
 	}
 	
 	public void setState(int state){this.state = state;}
+	public Player getPlayer(){return player;}
+	public void setLevel(Level level){this.level = level;}
 }
