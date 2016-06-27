@@ -18,6 +18,8 @@ public class Game {
 	private int state = MAINMENU;
 
 	public Game(){
+		Display.setTitle("Brickhead!");
+		
 		this.level = Level.fromFile("lvl1", this);
 		this.player = new Player(level, this);
 		
@@ -26,7 +28,7 @@ public class Game {
 		
 		Option play = new PlayOption(this, "play");
 		Option[] options = {play};
-		this.mainmenu = new Menu("Main Menu", "title", options);
+		this.mainmenu = new Menu("title", options);
 	}
 
 	public void render(){
