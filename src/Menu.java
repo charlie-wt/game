@@ -6,38 +6,21 @@ import org.newdawn.slick.opengl.Texture;
 public class Menu {
 	private String title;
 	private Texture titletex;
-	Texture[] options;
+	Option[] options;
 	
-	public Menu (String title, String titletex, String[] options) {
+	public Menu (String title, String titletex, Option[] options) {
 		this.title = title;
 		Display.setTitle(title);
 		this.titletex = Game.loadTexture(titletex);
-		Texture[] o = new Texture[options.length];
-		for(int i=0;i<options.length;i++){
-			o[i] = Game.loadTexture("text/" + options[i]);
-		}
-		
-		this.options = o;
-	}
-	
-	public Menu (String title, String[] options) {
-		this(title, null, options);
-	}
-	
-	public Menu (String title, String titletex) {
-		this(title, titletex, null);
-	}
-	
-	public Menu (String title) {
-		this(title, null, null);
+		this.options = options;
 	}
 	
 	public int getX (int index) {
-		return (Display.getWidth()/2) - (options[index].getImageWidth()/2);
+		return (Display.getWidth()/2) - (options[index].getTex().getImageWidth()/2);
 	}
 	
 	public int getY (int index) {
-		return 300 - index*options[index].getImageHeight() - index*10;
+		return 300 - index*options[index].getTex().getImageHeight() - index*10;
 	}
 	
 	public void render () {
@@ -50,13 +33,14 @@ public class Menu {
 	public void update () {
 	// Checking if mouse is over any buttons.
 		for(int i=0;i<options.length;i++){
-			boolean isInX = Mouse.getX() >= getX(i) && Mouse.getX() <= getX(i) + options[i].getImageWidth();
-			boolean isInY = Mouse.getY() >= getY(i) && Mouse.getY() <= getY(i) + options[i].getImageHeight();
+			boolean isInX = Mouse.getX() >= getX(i) && Mouse.getX() <= getX(i) + options[i].getTex().getImageWidth();
+			boolean isInY = Mouse.getY() >= getY(i) && Mouse.getY() <= getY(i) + options[i].getTex().getImageHeight();
 			
 			if(isInX && isInY){
 				if(Mouse.isButtonDown(0)){
 					// TODO - Not a perfect solution, as is usually triggered multiple times on click, but given the actions that will be performed on click this may not matter.
-					System.out.println("Woah!");
+					System.out.println(options[i].getName());
+					options[i].activate();
 				}
 				Display.setTitle("In.");
 			}else{
@@ -102,7 +86,7 @@ public class Menu {
 	}
 	
 	public void drawOption (int index) {
-		Texture tex = options[index];
+		Texture tex = options[index].getTex();
 		float w, h;
 		int iw, ih, x, y;
 
